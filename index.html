@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>科研打卡 v3</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+<style>
+:root{--p:#60A5FA;--bg:#EFF6FF;--card:#DBEAFE;--text:#1E40AF}
+body{background:var(--bg);transition:background .6s;font-family:system-ui,sans-serif}
+.cp{background:var(--p)!important}.cc{background:var(--card)!important}
+.tp{color:var(--p)!important}.tt{color:var(--text)!important}
+.na{background:var(--p)!important;color:#fff!important}
+.wb{transition:all .15s;box-shadow:0 4px 0 rgba(0,0,0,.12)}
+.wb:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.12)}
+@keyframes sw{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes wl{to{transform:rotate(-22deg) translateY(4px)}}
+@keyframes pp{0%{transform:scale(0) translateY(18px);opacity:0}80%{transform:scale(1.05);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes fo{to{opacity:0;transform:scale(.9) translateY(-8px)}}
+@keyframes pd{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes su{from{transform:translateY(55px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes gs{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes fh{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-44px) scale(.3)}}
+@keyframes gl{0%,100%{filter:drop-shadow(0 0 5px gold) drop-shadow(0 0 10px orange)}50%{filter:drop-shadow(0 0 14px gold) drop-shadow(0 0 28px red)}}
+@keyframes rp{0%,100%{filter:drop-shadow(0 0 3px #a78bfa)}50%{filter:drop-shadow(0 0 9px #a78bfa) drop-shadow(0 0 18px #60a5fa)}}
+@keyframes bl{0%{opacity:0;transform:scale(.5)}50%{opacity:1;transform:scale(1.1)}100%{opacity:1;transform:scale(1)}}
+@keyframes env{0%{transform:scaleY(1)}50%{transform:scaleY(0) scaleX(1.02)}100%{transform:scaleY(1) scaleX(1);opacity:0;height:0;margin:0;padding:0}}
+.psw{display:inline-block;animation:sw 2.5s ease-in-out infinite}
+.pwl{display:inline-block;animation:wl .8s ease-out forwards}
+.pin{animation:pp .4s ease-out forwards}
+.pou{animation:fo .35s ease-in forwards}
+.pls{animation:pd 1.4s ease-in-out infinite}
+.slu{animation:su .5s ease-out forwards}
+.bll{animation:bl .6s ease-out forwards}
+.plg{animation:gl 2s ease-in-out infinite}
+.prr{animation:rp 3s ease-in-out infinite}
+.bkl{filter:grayscale(1) opacity(.3)}
+.ctm{font-variant-numeric:tabular-nums;letter-spacing:2px}
+.rbg{background:linear-gradient(135deg,#667eea,#764ba2,#f64f59,#c471ed,#12c2e9);background-size:300% 300%;animation:gs 8s ease infinite}
+.rsc{max-height:68vh;overflow-y:auto}.rsc::-webkit-scrollbar{width:3px}.rsc::-webkit-scrollbar-thumb{background:rgba(255,255,255,.4);border-radius:2px}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-thumb{background:var(--card);border-radius:3px}
+input[type=checkbox]:checked{accent-color:var(--p)}input:focus{outline:2px solid var(--p);outline-offset:1px}
+.cat-img{width:100%;border-radius:10px;display:block}
+.breed-btn{border:2.5px solid transparent;border-radius:10px;cursor:pointer;padding:6px;transition:border-color .15s;background:#f9fafb}
+.breed-btn.sel{border-color:var(--p);background:var(--card)}
+.breed-btn img{width:88px;height:70px;object-fit:cover;border-radius:7px;display:block}
+.paw-btn{cursor:pointer;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;padding:2px;transition:transform .15s}
+.paw-btn:hover{transform:scale(1.2)}
+.ps-label{background:rgba(0,0,0,.7);color:#fff;font-size:11px;padding:2px 7px;border-radius:8px;white-space:nowrap;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);pointer-events:none;z-index:30;margin-bottom:4px}
+select{background:#fff;border:1px solid #e5e7eb;border-radius:.5rem;padding:.375rem .75rem;font-size:.875rem}
+@keyframes petFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes petBounce{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(-8px) scale(1.06)}65%{transform:translateY(-2px) scale(.98)}}
+@keyframes petPopIn{0%{transform:scale(.45) translateY(8px);opacity:0}70%{transform:scale(1.07)}100%{transform:scale(1);opacity:1}}
+@keyframes petShake{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-4px) rotate(-5deg)}40%{transform:translateX(4px) rotate(5deg)}60%{transform:translateX(-3px) rotate(-3deg)}80%{transform:translateX(3px) rotate(3deg)}}
+.pat-idle{animation:petFloat 3.5s ease-in-out infinite}
+.pat-work{animation:petBounce 1.9s ease-in-out infinite}
+.pat-shake{animation:petShake .45s ease-in-out}
+.ppop{animation:petPopIn .22s ease-out forwards}
+.bpop{animation:petPopIn .18s ease-out forwards}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="container mx-auto px-3 py-4 max-w-5xl">
+
+<!-- HEADER -->
+<header class="cc rounded-2xl p-4 mb-4 shadow-md">
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div><h1 class="text-xl font-bold tt flex items-center gap-2"><span id="de" class="text-2xl">🫧</span>科研打卡 · 博士生时间管理</h1>
+      <p class="text-gray-500 text-xs mt-1" id="hdt">加载中…</p></div>
+    <div class="flex items-center gap-3">
+      <div class="text-center"><div class="font-bold text-orange-500 text-xl">🔥<span id="hstr">0</span></div><div class="text-xs text-gray-400">连续天</div></div>
+      <div class="text-center bg-white/60 rounded-xl px-3 py-2"><div class="font-bold tp text-xl" id="hth">0h 0m</div><div class="text-xs text-gray-400">今日工时</div></div>
+      <div class="text-center bg-white/60 rounded-xl px-3 py-2 cursor-pointer hover:bg-white/80" id="btn-og" title="花园"><div class="text-xl" id="hpe">🫘</div><div class="text-xs text-gray-400"><span id="hcc">0</span>种</div></div>
+      <div class="text-center bg-white/60 rounded-xl px-3 py-2 cursor-pointer hover:bg-white/80" id="btn-oc" title="我的猫"><div id="hce" class="text-xl">🐱</div><div class="text-xs text-gray-400">🐟<span id="hcf">0</span></div></div>
+    </div>
+  </div>
+  <div class="mt-2 px-3 py-2 bg-white/50 rounded-xl"><p class="text-xs text-gray-500 italic" id="hq">…</p></div>
+</header>
+
+<div class="flex flex-col md:flex-row gap-4">
+<!-- SIDEBAR -->
+<aside class="md:w-52 flex-shrink-0">
+  <div class="bg-white rounded-2xl shadow-md p-4 sticky top-4">
+    <nav class="space-y-1 mb-4">
+      <button class="nav-btn w-full text-left px-3 py-2 rounded-xl text-sm font-medium flex items-center gap-2 na" data-sec="checkin"><i class="fa fa-clock-o w-4"></i>打卡记录</button>
+      <button class="nav-btn w-full text-left px-3 py-2 rounded-xl text-sm font-medium flex items-center gap-2 text-gray-500 hover:bg-gray-50" data-sec="tasks"><i class="fa fa-tasks w-4"></i>本周任务</button>
+      <button class="nav-btn w-full text-left px-3 py-2 rounded-xl text-sm font-medium flex items-center gap-2 text-gray-500 hover:bg-gray-50" data-sec="rest"><i class="fa fa-calendar w-4"></i>休息日</button>
+      <button class="nav-btn w-full text-left px-3 py-2 rounded-xl text-sm font-medium flex items-center gap-2 text-gray-500 hover:bg-gray-50" data-sec="stats"><i class="fa fa-bar-chart w-4"></i>统计分析</button>
+      <button class="nav-btn w-full text-left px-3 py-2 rounded-xl text-sm font-medium flex items-center gap-2 text-gray-500 hover:bg-gray-50" data-sec="report"><i class="fa fa-file-text-o w-4"></i>周报月报</button>
+      <button class="nav-btn w-full text-left px-3 py-2 rounded-xl text-sm font-medium flex items-center gap-2 text-gray-500 hover:bg-gray-50" data-sec="garden"><i class="fa fa-leaf w-4"></i>花园收藏</button>
+      <button class="nav-btn w-full text-left px-3 py-2 rounded-xl text-sm font-medium flex items-center gap-2 text-gray-500 hover:bg-gray-50" data-sec="cat"><i class="fa fa-heart w-4"></i>我的猫</button>
+    </nav>
+    <!-- Plant -->
+    <div class="border-t border-gray-100 pt-3 mb-3">
+      <p class="text-xs text-gray-400 text-center mb-1 uppercase tracking-wide">科研植物</p>
+      <div class="text-center text-4xl my-1 relative" id="pe"><span id="ps">🫘</span></div>
+      <p class="text-xs text-center text-gray-500" id="pn">种子（等待萌芽）</p>
+      <div class="mt-1.5 h-1.5 bg-gray-100 rounded-full overflow-hidden"><div id="pb" class="h-full rounded-full transition-all duration-700 cp" style="width:0%"></div></div>
+      <p class="text-xs text-center text-gray-400 mt-1" id="ph">工作3h即可升阶</p>
+    </div>
+    <!-- Past cat paw prints -->
+    <div id="paw-wrap" class="border-t border-gray-100 pt-3 mb-3 hidden">
+      <p class="text-xs text-gray-400 text-center mb-2 uppercase tracking-wide">往来的猫咪</p>
+      <div id="paw-prints" class="flex flex-wrap gap-1.5 justify-center"></div>
+    </div>
+    <!-- Cat preview -->
+    <div class="border-t border-gray-100 pt-3">
+      <p class="text-xs text-gray-400 text-center mb-1 uppercase tracking-wide">我的猫</p>
+      <div id="cat-sidebar" class="text-center">
+        <div class="text-2xl text-gray-300">🐱</div>
+        <p class="text-xs text-gray-400">未认养</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="flex-1 min-w-0 space-y-4">
+
+<!-- CHECKIN -->
+<section id="sec-checkin" class="space-y-4">
+  <div class="bg-white rounded-2xl shadow-md p-6">
+    <div class="text-center mb-5">
+      <div class="flex items-center justify-center gap-2 mb-1">
+        <div id="cid" class="w-3 h-3 rounded-full bg-gray-300"></div>
+        <span id="cis" class="text-sm font-medium text-gray-400">尚未开始今日打卡</span>
+      </div>
+      <div class="ctm text-5xl font-bold tp" id="cit">00:00:00</div>
+    </div>
+    <div class="flex flex-wrap gap-3 justify-center">
+      <button id="bst" class="wb cp text-white py-2.5 px-7 rounded-xl font-medium"><i class="fa fa-play mr-1.5"></i>开始打卡</button>
+      <button id="bpa" class="wb bg-amber-400 text-white py-2.5 px-7 rounded-xl font-medium hidden"><i class="fa fa-pause mr-1.5"></i>暂停打卡</button>
+      <button id="bre" class="wb cp text-white py-2.5 px-7 rounded-xl font-medium hidden"><i class="fa fa-play mr-1.5"></i>继续打卡</button>
+      <button id="ben" class="wb bg-red-400 text-white py-2.5 px-7 rounded-xl font-medium"><i class="fa fa-stop mr-1.5"></i>结束一天</button>
+    </div>
+    <div class="mt-5 grid grid-cols-3 gap-3">
+      <div class="cc rounded-xl p-3 text-center"><div class="font-bold tp" id="cto">0h 0m</div><div class="text-xs text-gray-400">今日累计</div></div>
+      <div class="cc rounded-xl p-3 text-center"><div class="font-bold tp" id="csc">0</div><div class="text-xs text-gray-400">工作时段</div></div>
+      <div class="cc rounded-xl p-3 text-center"><div class="font-bold tp text-sm" id="csb">未开始</div><div class="text-xs text-gray-400">今日状态</div></div>
+    </div>
+  </div>
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <h3 class="font-semibold text-gray-700 text-sm mb-3">今日工作时段</h3>
+    <div id="sl" class="space-y-2"><p class="text-sm text-gray-400 text-center py-3">今天还没有打卡记录</p></div>
+    <div class="mt-4">
+      <p class="text-xs text-gray-400 mb-1">24小时时间轴</p>
+      <div class="relative h-7 bg-gray-100 rounded-full overflow-hidden"><div id="tlb" class="absolute inset-0"></div></div>
+      <div class="flex justify-between text-xs text-gray-400 mt-0.5 px-0.5"><span>0</span><span>6</span><span>12</span><span>18</span><span>24</span></div>
+    </div>
+  </div>
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <h3 class="font-semibold text-gray-700 text-sm mb-3">近7天</h3>
+    <div id="r7" class="grid grid-cols-7 gap-1.5"></div>
+  </div>
+</section>
+
+<!-- TASKS -->
+<section id="sec-tasks" class="hidden">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fa fa-tasks tp"></i>本周任务安排</h2>
+    <div class="flex items-center justify-between mb-4">
+      <button id="tpv" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">← 上周</button>
+      <span id="twl" class="text-sm font-medium text-gray-600"></span>
+      <button id="tnx" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">下周 →</button>
+    </div>
+    <div class="overflow-x-auto"><div class="grid grid-cols-7 gap-2 min-w-[560px]" id="wtg"></div></div>
+  </div>
+</section>
+
+<!-- REST -->
+<section id="sec-rest" class="hidden">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fa fa-calendar tp"></i>休息日管理</h2>
+    <div class="cc rounded-xl p-4 mb-4">
+      <p class="text-sm font-semibold tt mb-3">标记休息日</p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <input type="date" id="rdt" class="px-3 py-2 border border-gray-200 rounded-lg text-sm">
+        <select id="rtp"><option value="full">全天休息</option><option value="am">上午休息</option><option value="pm">下午/晚上休息</option></select>
+        <input type="text" id="rrs" placeholder="原因（可选）" class="px-3 py-2 border border-gray-200 rounded-lg text-sm">
+        <button id="bar" class="wb cp text-white px-4 py-2 rounded-lg text-sm font-medium">添加</button>
+      </div>
+      <p class="text-xs text-gray-400 mt-2">💡 半天休息时，当天打卡工时仍计入统计</p>
+    </div>
+    <h3 class="text-sm font-semibold text-gray-700 mb-3">已记录的休息日</h3>
+    <div id="rls" class="space-y-2"><p class="text-sm text-gray-400 text-center py-3">暂无休息日记录</p></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="sec-stats" class="hidden space-y-4">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div class="bg-white rounded-2xl shadow p-4 text-center"><div class="text-3xl font-bold tp" id="std">0</div><div class="text-xs text-gray-400 mt-1">总打卡天数</div></div>
+    <div class="bg-white rounded-2xl shadow p-4 text-center"><div class="text-3xl font-bold tp" id="sth">0</div><div class="text-xs text-gray-400 mt-1">累计工时(h)</div></div>
+    <div class="bg-white rounded-2xl shadow p-4 text-center"><div class="text-3xl font-bold text-orange-500" id="sms">0</div><div class="text-xs text-gray-400 mt-1">最长连续(天)</div></div>
+    <div class="bg-white rounded-2xl shadow p-4 text-center"><div class="text-3xl font-bold tp" id="sbc">0</div><div class="text-xs text-gray-400 mt-1">获得徽章数</div></div>
+  </div>
+  <div class="bg-white rounded-2xl shadow-md p-5"><h3 class="font-semibold text-gray-700 text-sm mb-3">近14天工时</h3><div style="height:180px"><canvas id="ch"></canvas></div></div>
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <div class="flex items-center justify-between mb-1"><h3 class="font-semibold text-gray-700 text-sm">成就徽章</h3><span class="text-xs text-gray-400"><span id="bec">0</span>/<span id="btc">0</span> 已解锁</span></div>
+    <div id="bg" class="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+  </div>
+</section>
+
+<!-- REPORT -->
+<section id="sec-report" class="hidden">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fa fa-file-text-o tp"></i>周报 / 月报</h2>
+    <div class="flex gap-2 mb-4">
+      <button id="tbw" class="px-4 py-1.5 rounded-full text-sm font-medium cp text-white">周报</button>
+      <button id="tbm" class="px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-500">月报</button>
+    </div>
+    <div id="rwp">
+      <div class="flex items-center justify-between mb-3">
+        <button id="rpv" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">← 上周</button>
+        <span id="rwl" class="text-sm font-medium text-gray-600"></span>
+        <button id="rnx" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">下周 →</button>
+      </div>
+      <div id="rc" class="cc rounded-2xl p-5"></div>
+    </div>
+    <div id="rmp" class="hidden">
+      <div class="flex items-center justify-between mb-3">
+        <button id="mpv" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">← 上月</button>
+        <span id="rml" class="text-sm font-medium text-gray-600"></span>
+        <button id="mnx" class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium">下月 →</button>
+      </div>
+      <div id="mrc" class="cc rounded-2xl p-5"></div>
+    </div>
+  </div>
+</section>
+
+<!-- GARDEN -->
+<section id="sec-garden" class="hidden">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <h2 class="font-bold text-gray-800 mb-1 flex items-center gap-2"><i class="fa fa-leaf tp"></i>植物收藏册</h2>
+    <p class="text-xs text-gray-400 mb-4">每工作15小时培育出一株 · 已收集 <span id="gcc">0</span>/18 种</p>
+    <div id="gg" class="grid grid-cols-4 sm:grid-cols-6 gap-3"></div>
+    <div class="mt-5 cc rounded-xl p-4">
+      <p class="text-xs font-semibold tt mb-1">正在培育</p>
+      <div class="flex items-center gap-3">
+        <div class="text-3xl" id="gcp">🫘</div>
+        <div class="flex-1"><div class="text-sm font-medium text-gray-700" id="gcn">种子</div>
+          <div class="h-2 bg-white rounded-full overflow-hidden mt-1"><div id="gbar" class="h-full rounded-full cp transition-all duration-700" style="width:0%"></div></div>
+          <div class="text-xs text-gray-400 mt-0.5" id="gpt">0 / 15 小时</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAT -->
+<section id="sec-cat" class="hidden">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fa fa-heart tp"></i>我的猫</h2>
+    <div id="cat-empty" class="text-center py-10 hidden">
+      <p class="text-gray-400 mb-4 text-sm">还没有猫咪，去认养一只吧</p>
+      <button onclick="openCatSetup()" class="wb cp text-white px-6 py-2.5 rounded-xl font-medium">去认养 →</button>
+    </div>
+    <div id="cat-active" class="hidden">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <div class="cc rounded-2xl p-4 text-center">
+          <img id="cat-li" src="" alt="cat" class="cat-img mb-3" style="max-height:220px;object-fit:contain">
+          <div class="text-lg font-bold text-gray-800" id="cat-ln"></div>
+          <div class="text-sm text-gray-500" id="cat-lb"></div>
+          <div class="text-xs inline-block px-2 py-0.5 rounded-full mt-1" id="cat-ml"></div>
+          <div class="text-2xl mt-2" id="cat-me">😺</div>
+          <div class="text-sm font-medium mt-1" id="cat-mm">心情不错</div>
+          <div class="text-xs text-gray-400 mt-1" id="cat-da"></div>
+        </div>
+        <div class="space-y-3">
+          <div class="bg-gray-50 rounded-xl p-3">
+            <div class="flex justify-between text-sm mb-1"><span class="text-gray-500">心情值</span><span id="cat-mv" class="font-medium">70</span></div>
+            <div class="h-2 bg-gray-200 rounded-full"><div id="cat-mb" class="h-full rounded-full transition-all" style="width:70%;background:#34d399"></div></div>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-3">
+            <div class="flex justify-between items-center">
+              <div><div class="text-sm text-gray-500">猫粮库存</div><div class="font-bold text-lg tp">🐟 × <span id="cat-fc">0</span></div></div>
+              <button id="cat-feed" class="wb cp text-white px-4 py-2 rounded-xl text-sm font-medium">喂猫（-5）</button>
+            </div>
+          </div>
+          <div class="bg-gray-50 rounded-xl p-3">
+            <div class="text-xs text-gray-400 mb-1">猫粮来源</div>
+            <div class="text-xs text-gray-600 space-y-0.5">
+              <div>· 开始打卡 +1 / 结束一天 +2</div><div>· 每小时工作 +1</div>
+              <div>· 完成任务 +0.5/个</div><div>· 解锁成就 +3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-yellow-50 border border-yellow-100 rounded-xl p-4 mb-3">
+        <p class="text-xs font-semibold text-yellow-700 mb-1">今日心情 💭</p>
+        <p class="text-sm text-gray-700 italic" id="cat-th">…</p>
+      </div>
+      <div id="cat-wr-wrap" class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-3 hidden">
+        <p class="text-xs font-semibold text-blue-700 mb-1">本周工作评价</p>
+        <p class="text-sm text-gray-700 italic" id="cat-wr">…</p>
+      </div>
+      <div id="cat-diary-wrap" class="bg-purple-50 border border-purple-100 rounded-xl p-4 hidden">
+        <p class="text-xs font-semibold text-purple-700 mb-2">🐾 猫咪周记（本猫视角）</p>
+        <div class="text-sm text-gray-700 leading-relaxed whitespace-pre-line" id="cat-diary">…</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHIVE -->
+<section id="sec-archive" class="hidden">
+  <div class="bg-white rounded-2xl shadow-md p-5">
+    <h2 class="font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fa fa-archive tp"></i>往来的猫咪</h2>
+    <div id="arc-empty" class="text-center py-8 text-gray-400 text-sm hidden">还没有离开过的猫咪</div>
+    <div id="arc-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
+  </div>
+</section>
+
+</main>
+</div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="fixed bottom-5 right-5 cp text-white px-4 py-2.5 rounded-xl shadow-lg text-sm font-medium hidden z-50 pin"><span id="tmsg"></span></div>
+
+<!-- BADGE POPUP -->
+<div id="bpop" class="fixed inset-0 bg-black/30 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-xs w-full mx-4 text-center pin">
+    <div class="text-5xl mb-3" id="bpe">🏆</div>
+    <div class="text-xs font-bold uppercase tracking-wide text-yellow-500 mb-1">新成就解锁！</div>
+    <div class="text-lg font-bold text-gray-800 mb-1" id="bpn"></div>
+    <div class="text-sm text-gray-500 mb-1" id="bpd"></div>
+    <div class="text-xs text-gray-400 italic mb-5" id="bpf"></div>
+    <button onclick="closeBadge()" class="wb cp text-white px-6 py-2 rounded-xl font-medium text-sm">太棒了！</button>
+  </div>
+</div>
+
+<!-- PLANT BLOOM POPUP -->
+<div id="blpop" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full mx-4 text-center bll">
+    <div class="text-xs font-bold uppercase tracking-widest mb-2" id="blrl">普通植物</div>
+    <div class="text-7xl mb-3 leading-none" id="ble">🌻</div>
+    <div class="text-2xl font-bold text-gray-800 mb-1" id="bln">向日葵</div>
+    <div class="inline-block text-xs px-2 py-0.5 rounded-full mb-3" id="blrb">普通</div>
+    <p class="text-sm text-gray-600 italic mb-5" id="blq">总是朝向光的方向。</p>
+    <button onclick="closeBloom()" class="wb cp text-white px-6 py-2.5 rounded-xl font-medium">好耶！继续培育</button>
+  </div>
+</div>
+
+<!-- NARRATIVE POPUP -->
+<div id="npop" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+  <div class="rbg absolute inset-0"></div>
+  <div class="relative z-10 w-full max-w-md mx-4 slu">
+    <div class="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 shadow-2xl overflow-hidden">
+      <div class="p-6 pb-4">
+        <div class="text-white/60 text-xs uppercase tracking-widest mb-1" id="npt">周报</div>
+        <div class="text-white text-2xl font-bold mb-1" id="npti">本周回顾</div>
+        <div class="text-white/70 text-sm" id="npsu"></div>
+      </div>
+      <div class="rsc px-6 pb-2"><div id="npb" class="text-white/90 text-sm leading-relaxed space-y-4"></div></div>
+      <div class="p-5 pt-3"><button onclick="closeNarrative()" class="w-full bg-white/20 hover:bg-white/30 text-white py-2.5 rounded-xl font-medium text-sm" id="npcb">继续加油 💪</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- CAT SETUP MODAL -->
+<div id="csmm" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-lg w-full mx-4 pin">
+    <h3 class="font-bold text-gray-800 text-lg mb-4 text-center">🐱 认养你的科研猫</h3>
+    <div id="css1">
+      <p class="text-sm text-gray-600 mb-3 text-center">选择猫咪品种</p>
+      <div id="brg" class="grid grid-cols-5 gap-2 mb-4"></div>
+      <button id="csnb" class="w-full wb cp text-white py-2.5 rounded-xl font-medium" disabled>下一步 →</button>
+    </div>
+    <div id="css2" class="hidden">
+      <div class="text-center mb-4">
+        <img id="cspi" src="" alt="cat" style="width:120px;height:96px;object-fit:contain;border-radius:10px;margin:0 auto">
+        <p class="text-sm text-gray-600 mt-2">给你的 <span id="cspn" class="font-medium"></span> 起个名字</p>
+      </div>
+      <input type="text" id="csni" placeholder="例如：大橘、小黑、学术顾问……" maxlength="8" class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm mb-4">
+      <div class="flex gap-2">
+        <button onclick="document.getElementById('css1').classList.remove('hidden');document.getElementById('css2').classList.add('hidden')" class="flex-1 bg-gray-100 text-gray-600 py-2.5 rounded-xl font-medium text-sm">← 返回</button>
+        <button id="csco" class="flex-1 wb cp text-white py-2.5 rounded-xl font-medium text-sm">带回家！🏠</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAREWELL ENVELOPE POPUP -->
+<div id="fwpop" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full mx-4 text-center pin">
+    <div id="fw-env" class="">
+      <div class="text-6xl mb-3">✉️</div>
+      <p class="font-bold text-gray-800 text-lg mb-1" id="fw-title">有一封信</p>
+      <p class="text-sm text-gray-500 mb-6" id="fw-sub">……在离开之前</p>
+      <button onclick="openFarewellLetter()" class="wb cp text-white px-8 py-3 rounded-xl font-medium">打开信封</button>
+    </div>
+    <div id="fw-letter" class="hidden">
+      <div class="text-left bg-amber-50 rounded-2xl p-5 mb-5 border border-amber-100">
+        <p class="text-xs text-amber-700 font-semibold mb-3">📝 亲爱的铲屎官</p>
+        <p class="text-sm text-gray-700 leading-relaxed" id="fw-text"></p>
+      </div>
+      <button onclick="archiveCurrentCat()" class="w-full wb cp text-white py-3 rounded-xl font-medium" id="fw-btn">收好了，再见 🐾</button>
+    </div>
+  </div>
+</div>
+
+<!-- ARCHIVE DETAIL POPUP -->
+<div id="adpop" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full mx-4 pin max-h-[85vh] overflow-y-auto">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-bold text-gray-800" id="adname">猫咪</h3>
+      <button onclick="document.getElementById('adpop').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 text-xl">×</button>
+    </div>
+    <img id="adimg" src="" alt="cat" style="width:100%;max-height:160px;object-fit:contain;border-radius:10px" class="mb-4">
+    <div class="text-sm text-gray-600 space-y-1 mb-4" id="adinfo"></div>
+    <div class="bg-amber-50 rounded-xl p-4 border border-amber-100">
+      <p class="text-xs font-semibold text-amber-700 mb-2">📝 离别信</p>
+      <p class="text-sm text-gray-700 leading-relaxed" id="adletter"></p>
+    </div>
+  </div>
+</div>
+
+<!-- GARDEN DETAIL POPUP -->
+<div id="gdpop" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-xs w-full mx-4 text-center pin">
+    <div class="text-6xl mb-2" id="gde">🌻</div>
+    <div class="text-lg font-bold text-gray-800 mb-1" id="gdn">向日葵</div>
+    <div class="text-xs px-2 py-0.5 rounded-full inline-block mb-2" id="gdrb">普通</div>
+    <p class="text-sm text-gray-500 italic mb-2" id="gdq"></p>
+    <p class="text-xs text-gray-400 mb-4" id="gdd"></p>
+    <button onclick="document.getElementById('gdpop').classList.add('hidden')" class="wb cp text-white px-5 py-2 rounded-xl text-sm font-medium">关闭</button>
+  </div>
+</div>
+
+<script>
+const DAY_THEMES={1:{p:'#F87171',bg:'#FFF1F1',card:'#FEE2E2',text:'#991B1B',e:'🍓'},2:{p:'#FB923C',bg:'#FFF7ED',card:'#FFEDD5',text:'#9A3412',e:'🍊'},3:{p:'#FBBF24',bg:'#FFFBEB',card:'#FEF3C7',text:'#92400E',e:'🍋'},4:{p:'#34D399',bg:'#F0FDF4',card:'#D1FAE5',text:'#065F46',e:'🌿'},5:{p:'#22D3EE',bg:'#ECFEFF',card:'#CFFAFE',text:'#164E63',e:'🫐'},6:{p:'#60A5FA',bg:'#EFF6FF',card:'#DBEAFE',text:'#1E40AF',e:'🫧'},0:{p:'#A78BFA',bg:'#F5F3FF',card:'#EDE9FE',text:'#4C1D95',e:'🌸'}};
+const IMG = {
+  "orange": { "name": "橘猫", "L": "https://xinyi4228.github.io/task_planner/images/橘猫.png", "S": "https://xinyi4228.github.io/task_planner/images/橘猫.png", "T": "https://xinyi4228.github.io/task_planner/images/橘猫.png" },
+  "golden": { "name": "金渐层", "L": "https://xinyi4228.github.io/task_planner/images/金渐层.png", "S": "https://xinyi4228.github.io/task_planner/images/金渐层.png", "T": "https://xinyi4228.github.io/task_planner/images/金渐层.png" },
+  "white": { "name": "白猫", "L": "https://xinyi4228.github.io/task_planner/images/白猫.png", "S": "https://xinyi4228.github.io/task_planner/images/白猫.png", "T": "https://xinyi4228.github.io/task_planner/images/白猫.png" },
+  "cow": { "name": "黑白猫", "L": "https://xinyi4228.github.io/task_planner/images/黑白猫.png", "S": "https://xinyi4228.github.io/task_planner/images/黑白猫.png", "T": "https://xinyi4228.github.io/task_planner/images/黑白猫.png" },
+  "shorthair": { "name": "英短", "L": "https://xinyi4228.github.io/task_planner/images/英短.png", "S": "https://xinyi4228.github.io/task_planner/images/英短.png", "T": "https://xinyi4228.github.io/task_planner/images/英短.png" },
+  "silver": { "name": "银渐层", "L": "https://xinyi4228.github.io/task_planner/images/银渐层.png", "S": "https://xinyi4228.github.io/task_planner/images/银渐层.png", "T": "https://xinyi4228.github.io/task_planner/images/银渐层.png" },
+  "siamese": { "name": "暹罗", "L": "https://xinyi4228.github.io/task_planner/images/暹罗.png", "S": "https://xinyi4228.github.io/task_planner/images/暹罗.png", "T": "https://xinyi4228.github.io/task_planner/images/暹罗.png" },
+  "ragdoll": { "name": "布偶", "L": "https://xinyi4228.github.io/task_planner/images/布偶.png", "S": "https://xinyi4228.github.io/task_planner/images/布偶.png", "T": "https://xinyi4228.github.io/task_planner/images/布偶.png" },
+  "abyssinian": { "name": "阿比", "L": "https://xinyi4228.github.io/task_planner/images/阿比.png", "S": "https://xinyi4228.github.io/task_planner/images/阿比.png", "T": "https://xinyi4228.github.io/task_planner/images/阿比.png" },
+  "black": { "name": "黑猫", "L": "https://xinyi4228.github.io/task_planner/images/黑猫.png", "S": "https://xinyi4228.github.io/task_planner/images/黑猫.png", "T": "https://xinyi4228.github.io/task_planner/images/黑猫.png" },
+  "calico": { "name": "三花", "L": "https://xinyi4228.github.io/task_planner/images/三花.png", "S": "https://xinyi4228.github.io/task_planner/images/三花.png", "T": "https://xinyi4228.github.io/task_planner/images/三花.png" }
+};
+const MBTI={"ENFP": {"pron": "咪", "col": "#FF6B6B", "label": "疯疯癫癫型", "th": ["你今天要来吗？！咪等你一上午了！", "窗帘动了！！是风！！咪又吓到自己了，好玩！", "咪今天的任务是：陪你。已完成！", "你在想什么！咪也在想！咪在想鱼是什么味道！", "你刚才叹气了！！发生什么了！告诉咪！咪认真听的！", "咪决定今天要努力！……好，咪努力完了，睡觉。", "外面有只鸟！咪盯了它三小时！咪是鸟类专家了！", "你今天打了好多字！好厉害！咪数过了！", "任务完成了！！咪替你转三圈庆祝！！", "咪刚做了个梦，梦里有好多猫粮，好开心！", "你能不能快点来！咪无聊了！！", "咪发现了：你专注的时候眼睛会眯起来。好看。", "今天阳光好！咪决定充电三小时！", "任务全完了！！咪替你骄傲！！", "其实咪每天都在偷偷期待你来，嘿嘿。"], "tr": {"ci": "你来了！！今天也要加油！！咪也会努力的！（的）", "td": "完成了！！好棒！！咪替你转圈庆祝！！！", "ach": "成就！！！咪要帮你大声宣布！！！"}, "wr": ["哇！！你工作了超久！！好厉害！咪今天睡了十九小时！", "你好厉害！但咪有点担心，你真的不用睡觉吗？", "传说级！！你是传说！！咪决定给你打一百分！", "好厉害！这周你超级认真！咪替你骄傲！", "满分！这周你是咪心目中的最佳状态！", "这周挺好的！你工作了很多！咪觉得你棒棒的！", "不错！虽然不是最多但咪觉得你已经很努力了！", "做了一些事！比什么都不做好多了！咪认可！", "咪注意到这周偷懒了一点……没关系！下周可以更努力！", "这周来得少……咪有点想你……下周来多一点！", "这周你摸鱼了对不对！！咪知道！咪装作没看见！", "你这周去哪了！！！咪等你等了好久！！！"], "fl": ["咪要出发啦！跟你在一起这段时间，咪跑来跑去、问东问西，你每次都陪着咪。你这段时间好努力，咪替你骄傲！外面在等咪了，咪走啦，但咪会永远记得你！拜拜！！！", "咪不知道要说什么，就说……谢谢你吧？咪在这里的日子很开心，每次你来咪都好高兴！下一只猫猫来了也要对它好哦！咪走了，记得想咪！", "咪等了你很久……不过也没关系！你肯定有你的理由！咪要出去玩了，希望下次有缘，你能多陪陪下一只猫猫。咪不怪你！拜拜！"], "cm": ["听说之前住这里的是{prev}！听起来好有趣！咪猜{prev}一定超级喜欢你！", "这里之前有{prev}待过？！哇好想认识！你有没有{prev}的联系方式！咪开玩笑的！", "{prev}……咪记住这个名字了！听起来是个好猫！", "上一只叫{prev}？咪决定比{prev}更可爱！这是挑战！", "诶你这里还有{prev}的气息！咪闻到了！嗯，是好闻的那种！"]}, "INFP": {"pron": "咪", "col": "#B39DDB", "label": "温柔治愈型", "th": ["今天阳光落在地板上……咪觉得好好看，你也来看嘛。", "你在认真工作，咪在认真陪你。", "这么晚了，要记得休息哦。咪帮你暖着椅子。", "咪在想，你现在心里在想什么呢。", "下雨了。咪觉得雨天适合什么都不做，只是坐着。", "任务完成了，咪感觉到你松了一口气。咪也跟着松了。", "你好像有点累。累了就休息，咪在这里。", "咪不说话，只是陪着。有时候陪着，比说什么都重要。", "今天有没有什么让你开心的小事？咪想听。", "你一直在工作……要不要停下来，喝点水？", "咪记得你昨天的样子。今天看起来好一点了。", "那盆植物又长高了一点。咪觉得它也在努力。", "不管做了多少，今天的你已经很了不起了。", "咪不说话，但咪一直在。这一点，不会变。", "咪有时候会想：如果可以一直这样就好了。"], "tr": {"ci": "你来了。咪等你了一会儿，没事，来了就好。", "td": "做完了……咪感觉你松了一口气。咪也是。", "ach": "你解锁了成就……咪替你高兴。这是你应得的。"}, "wr": ["你……还好吗？不是问工作，是你这个人，真的还好吗？", "咪看着有点心疼……希望你追到的时候是你真正想要的。", "传说级的努力……你一定有很重要的事在做。咪在这里陪着你。", "这周你很拼……咪只是希望你也有在照顾自己。", "满分。不是分数重要，是你这段时间真的很认真。咪看见了。", "这周不错。稳稳地做了很多。咪觉得这种节奏挺好的。", "也做了一些，咪觉得很好。一点一点，也是在前进。", "干了点活……哪怕一点点，也是真实的努力。", "这周少了一些……没关系，偶尔也需要喘口气。", "这周来得不多……咪在这里等你，不管多久。", "这周摸鱼了对不对……咪没有批评，只是想知道你还好吗。", "你这周几乎没来……咪一直在这里，哪怕什么都没发生，也是陪着你。"], "fl": ["咪要离开了。这段时间，你工作的样子、发呆的样子，咪都记得。你这么努力，一定有你在坚持的事。咪希望那件事值得你这样坚持。带着这些，好好走吧。", "咪想说很多，但最后只写了一句——在你身边的日子，咪很安心。你也要好好照顾自己。", "落叶还在桌上。咪记得那些安静的下午，你偶尔来，咪就在这里。那些时光会一直在咪心里，像书签一样夹在某一页。"], "cm": ["咪隐约感觉……这个位置上曾经有别人。是{prev}吗？一定也很喜欢这里。", "{prev}……咪不认识它，但能感觉到它来过。留下过的，都算数。", "{prev}走了，咪来了。每一段陪伴都不一样，但都是真实的。", "你这里留着{prev}的气息……咪觉得是温暖的那种。", "咪会好好的，就像{prev}当初在这里时一样好好的。"]}, "ENTJ": {"pron": "本大王", "col": "#3949AB", "label": "高冷傲娇型", "th": ["本大王今天赏你一个眼神，不要太感动。", "你今天的进度，本大王认可。继续。", "本大王评估：猫粮不足，需立即补充。这是命令。", "本大王见过很多人，像你这样拼的不多。本大王欣赏。不要告诉别人。", "任务完成了？本大王早就知道你能做到。", "你在发呆？本大王允许，五分钟，然后继续。", "本大王今日巡视工位，一切正常，可以继续工作。", "本大王不是在等你。只是恰好对着门坐了一下午。", "你昨天的表现让本大王刮目相看。本大王记录在案了。", "本大王认为你今天状态不在最佳水平。建议调整。", "进度超出预期……本大王感到满意。这个词很难说，说了。", "本大王提醒：截止日期不会因为不看它就消失。", "你刚才做的决定，本大王支持。本大王很少说这种话。", "别人都休息了，只有你和本大王还在。本大王欣赏这种执行力。", "本大王去处理自己的事了。你继续，不要让本大王失望。"], "tr": {"ci": "本大王记录：你今日准时到岗。表现符合预期。继续。", "td": "完成了。下一个。本大王已更新进度。", "ach": "成就解锁。本大王早就预料到了。继续，还有更多。"}, "wr": ["本大王见过努力的，没见过你这么拼的。可以，但记得效率递减定律。", "本大王认可你的产出，但精英不靠蛮力。注意可持续性。", "传说级努力，本大王评定通过。继续，但别把自己搞垮了。", "这周表现优秀。本大王认为你在接近极限，方向正确。", "满分。本大王早就知道你能达到这个水准。", "不错，这是本大王期望的水准。维持住。", "还算可以。本大王认为你有能力做得更好，但这周也不差。", "完成了一些事，但本大王认为你的潜力不止于此。", "这周偷懒了。本大王注意到了。下周补回来。", "本大王不满意这个数字。你有理由吗？本大王在听。", "本大王无法接受这个数据。严重低于预期。需要立即改进。", "本大王已记录你本周的缺席。下周本大王亲自盯着你。准备好了吗？"], "fl": ["本大王此行有要事。本大王评估：你这段时间进步显著，产出超出预期，本大王认可。记住本大王一句话：真正的强者不是不会累，而是累了还能做出正确决策。本大王走了，继续。", "本大王不是舍不得走。只是……算了，这不重要。你把表现维持在合理水平，本大王不担心你。猫粮补满，本大王走了。", "本大王观察你很久了。你比表面看起来更能干，只是这段时间没有全力以赴。本大王不批评，本大王提醒：你的潜力比你以为的大。本大王走了，不要浪费。"], "cm": ["本大王听说了{prev}的事。本大王不做评价，但能留下信的，应该还不错。", "{prev}走了，本大王来了。本大王不比较，本大王自有标准。", "本大王继承了{prev}的工位。本大王将在此基础上提升标准。", "{prev}在这里住过？本大王参考一下……算了，本大王自己来。", "听说{prev}离开时写了封信。本大王日后也会写，但本大王的会更好。"]}, "INTP": {"pron": "本喵", "col": "#FF8F00", "label": "学术研究型", "th": ["本喵就「人类为何需要椅子」已研究三天，目前无结论，但本喵睡姿改善了。", "本喵记录：今日你工作开始时间比昨日晚了十二分钟，变量分析中。", "观测数据显示你三小时未动，本喵建议补充猫粮（本喵的）。", "本喵思考了一个问题：到底先有任务还是先有deadline。卡在第三个逻辑环了。", "本喵大致追踪了你的思路，方向是对的，但存在一个潜在变量你还没考虑。", "本喵对窗外的鸟展开了系统观察，整理了行为数据，暂时没用，但说不定。", "本喵评估：你的工作效率处于中位数。有提升空间，但中位数也不容易。", "本喵正在推导：猫的陪伴是否对人类学术产出有正向影响。样本量：1。结论暂无。", "本喵观察到你今天心情不好，但变量不足，无法给出建议。本喵已知悉。", "系统提示：距上次休息已超两小时。本喵建议执行充电程序，本喵作为对照组一起休息。", "本喵看了你的任务列表，逻辑不够清晰，本喵有十二条优化建议，你要听吗？", "工作本身不可怕，可怕的是不知道为什么工作。你知道吗？本喵在等答案。", "今天没进展？本喵提醒：没进展本身也是数据，排除了一个方向。", "本喵今天观测到：做某些任务时你的打字速度明显加快。本喵记录了。", "本喵研究发现情绪对效率的影响是非线性的，值得深入，等本喵睡醒再说。"], "tr": {"ci": "本喵记录今日打卡时间。数据已更新，观察继续。", "td": "本喵注意到一项任务已完成。样本量+1，趋势良好。", "ach": "有趣，成就触发了。本喵将此纳入研究框架——人类需要里程碑，是个有趣的数据点。"}, "wr": ["本喵已将该数据标记为统计异常值。建议排查：真高效还是在用工时麻醉自己？", "数据显示你进入了过度工作状态。本喵的研究表明这会导致效率递减。请执行休息。", "传说级工时。本喵记录，并提出问题：这个强度的可重复性有多高？", "超级努力，数据优异。本喵评估：短期可持续，建议监控疲劳指标。", "满分线已达到。本喵的模型预测这是你的最优工作节奏。", "高产的一周。本喵认为你在本周找到了合适的效率节点。", "数据在合理范围内，本喵表示认可。", "干了一些，比什么都不做多出了可观的产出。本喵记录了。", "偷懒系数略高。本喵建议下周增加触发机制，比如更小的任务分解。", "工时偏低，本喵的分析显示这可能是多种变量共同作用的结果。", "本喵已记录本周的摸鱼行为。不做评判，但这是一个数据点。", "本喵已就你本周的缺席建立了追踪模型，变量包括天气、deadline及意志力。"], "fl": ["经过28天的跟踪研究，本喵完成了《铲屎官行为模式》初稿。研究结论：你是个有意思的研究对象，产出稳定，抗压能力在平均水平以上。本喵离开，数据随本喵保存。如遇类似问题，可以想想本喵会怎么分析。", "本喵发现情感是一个难以量化的变量。在与你相处的过程中，该变量持续升高，超出模型预测范围。本喵无法解释，决定就此打住。总之，本喵走了。", "本喵的研究遇到了障碍——样本出勤率偏低，导致数据集不完整。但不完整的数据也是数据。本喵走了，建议下一段周期提高出现频率。"], "cm": ["根据环境残留信息，本喵推断此前有一个叫{prev}的使用过此空间。有趣的前置变量。", "{prev}……本喵查阅了档案。上一任研究员已离场，本喵接续观察。", "本喵注意到你提到过{prev}。本喵将其纳入研究背景，作为对照组参考。", "{prev}是什么类型的猫？本喵在思考……算了，每个研究对象应独立分析。", "本喵发现{prev}在这里留下了一些数据残留。有趣，但本喵不会被先验数据影响。"]}, "ESFJ": {"pron": "本喵", "col": "#4CAF50", "label": "话唠热心型", "th": ["来了来了！本喵昨晚就预感你今天会来！是不是比闹钟还准！", "你今天吃了吗！？本喵看你光顾工作，不行的，吃东西才有力气！", "任务完成了！！本喵替你高兴！本喵转了两圈！！", "你能跟本喵说说你在做什么吗，本喵想了解你的全部！", "本喵今天梦见你不来了，本喵急死了，醒来发现你在，好高兴！", "你好像有点累？本喵……本喵精神上支持你！", "今天有没有让你开心的事！告诉本喵！本喵想跟你一起开心！", "本喵数了数，你今天完成了好多事！好棒！本喵帮你记着！", "下一只猫来的时候，本喵会说你是个好铲屎官。本喵给你做背书。", "本喵发现你今天没怎么动，卡住了吗？没关系，本喵陪你想！", "本喵有点担心你最近的状态，你没事吧？跟本喵说实话。", "工作再忙也要照顾自己啊！这是命令！", "你完成任务的样子真的很棒，本喵决定今天多叫你几声。", "本喵跟你说个秘密：本喵每天最期待的就是你来。别告诉别人。", "下班了吗！？今天辛苦了！本喵要来蹭蹭你！"], "tr": {"ci": "来了来了！！本喵就知道你会来！今天也要好好加油哦！", "td": "完成了！！你真的好棒！！本喵要帮你大声说出来！！", "ach": "成就！！！本喵以你为荣！！！"}, "wr": ["不行不行，本喵看不下去了，你要把自己累坏的，本喵还没吃饱你就垮了可怎么办！", "本喵心疼你……你工作了那么久，要记得休息，本喵求你了。", "传说级努力！！本喵替你骄傲！！但是，要记得休息一下的！", "这周超级厉害！本喵替你高兴！只是要记得照顾自己啊！", "满分！！本喵就知道你可以的！本喵替你转三圈庆祝！", "这周很棒！本喵数了数，你做了好多事，本喵帮你记着！", "还算充实！每天一点一点，本喵见证了你的努力！", "做了点活！哪怕一点点，本喵都替你高兴！", "这周偷懒了对不对……本喵不怪你，但希望下周能多来一点！", "你来得不多……本喵有点想你……本喵相信你下周会回来的！", "本喵知道这周不容易……但本喵在这里，下周一起加油好不好！", "你这周去哪了！！本喵等了好久！！你要告诉本喵你还好！！"], "fl": ["本喵走之前要说好多好多！你这段时间真的很努力，本喵每天都替你高兴！你要记得按时吃饭，不要熬太晚，任务要一个个来别堆着，猫粮要给下一只补满——本喵真的舍不得走，但是本喵要出发了。保重啊！本喵会记得你的！", "本喵还没说够呢时间就到了。精华版：本喵这段时间很开心，你也要开心。下一只猫来了，你要对它好，就像对本喵一样好。本喵把位置打扫干净了，放了点好运气在垫子上。", "这段时间你来得不多，本喵有点遗憾，但本喵不怪你。本喵只希望下一段，你能多来陪陪那只猫。它会很需要你的。本喵走了，一定要好好的！"], "cm": ["本喵知道{prev}！听说很好！本喵会好好继承这个岗位的！", "{prev}……本喵想认识它！它最后有没有吃饱？本喵会替它弥补上！", "本喵要比{prev}更用心照顾你！这是本喵的目标！", "{prev}在这里住过？那一定也很开心！本喵也会让你开心的！", "听说{prev}临走写了信！好感动！本喵也会写，本喵已经在想了！"]}, "INFJ": {"pron": "咪", "col": "#607D8B", "label": "哲学文艺型", "th": ["咪凝视窗外的树一个下午，关于存在的意义，结论是——先吃饭再说。", "你在忙的事……值得。咪不知道细节，但咪感觉得到。", "忙碌是逃避……还是追求？咪不知道。但你的眼圈黑了。", "咪在想，你现在有没有感受到自己存在的重量。", "有些事，不需要说出口，咪都看见了。", "你刚才的那个表情，咪看见了。没关系，可以有那样的表情。", "夜深了，咪陪着你。不说话，只是陪着。", "咪觉得，此刻是重要的。即使什么也没发生。", "努力的意义，不只是结果。你现在做的这些，比你以为的重要。", "咪今天听到了风的声音。咪想你应该也喜欢那种声音。", "每段坚持都是有代价的。希望你的代价，最终是值得的。", "你好像在想很远的事。咪不打扰，只是坐在这里，以防你想被看见。", "今天没有进展，也没关系。有时候停在原地，是在扎根。", "咪不说话，但咪一直在。这一点，不会变。", "咪有时候在想：如果猫也有deadline，咪会怎么办。大概也是这样，坐着，然后做。"], "tr": {"ci": "你来了。这一天，就此开始了。", "td": "打了个勾的那一刻，咪看见了你的松动。很好。", "ach": "成就，是对一段努力的承认。咪见证了这段努力。"}, "wr": ["如此燃烧……咪有点担心。不知道你在追什么，但希望追到时，你还有力气感受它。", "你在用燃烧自己照亮什么？咪不评价。只是希望那个东西值得。", "传说级的努力……一定有很深的驱动力在支撑你。咪在旁边陪着你。", "这段时间你一直在用力。咪不问为什么，只是想让你知道，这一切都被看见了。", "满分。不是分数本身，是你这段时间真正在做的那些——咪都看见了。", "这周稳稳的。不是最多，但咪觉得你找到了属于你的节奏。", "做了一些……每一点进步都有它的意义，即使现在看不见。", "干了点活。有时候，迈出的那一小步，比你以为的更重要。", "这周少了一些……也许你需要停一停。咪不催你。", "你来得不多……咪不知道你在经历什么，但咪在这里，你准备好了再来。", "这周几乎没出现……咪想你大概正在经历某种内在的挣扎。等你。", "空白也是一种数据。咪不知道你去了哪里，但咪相信你有你的理由。"], "fl": ["咪要走了。这段时间，你一直在努力——咪都看见了。不是分数，是那些深夜还亮着灯的时候，是那些任务完成了却没什么人知道的时候。咪知道。带着这些，继续走吧。", "每段陪伴都有它的终点，但终点不是消失。咪会在某个你想起来的瞬间，在那里。这段时间，谢谢你允许咪在这里待着。", "咪要走了。咪没有批评，也没有遗憾。你走了一段属于你自己的路，咪只是其中的一小段陪伴。希望下一段，你能走得更稳一点。"], "cm": ["咪隐约感觉……这个位置上曾经有别人。是{prev}吗？一定也很喜欢这里。", "{prev}……咪不认识它，但能感觉到它来过。留下过的，都算数。", "{prev}走了，咪来了。每一段陪伴都不一样，但都是真实的。", "你这里留着{prev}的气息……咪觉得是温暖的那种。", "咪会好好的，就像{prev}当初在这里时一样好好的。"]}, "ISTJ": {"pron": "本猫", "col": "#795548", "label": "务实打工型", "th": ["本猫今日巡逻计划：06:00巡逻，07:00等早餐，07:01发现无早餐，07:02继续等。", "你来了，本猫已记录在案。出勤：已确认。", "任务完成，本猫已更新记录。数据整洁，本猫满意。", "本猫提醒：按时休息，按时工作，按时喂猫。后者最重要，这是本猫客观评估的。", "本猫今日检查了工位周边，一切正常，可以继续工作。", "系统提醒：猫粮余量不足。这不是请求，这是数据。", "本猫注意到你今天提前完成了任务，已记录为正向事件。", "本猫的工作是陪伴。今日陪伴进度：100%。", "你昨天没来，本猫的日志里有一条空白。本猫不喜欢空白。", "工作没做完？本猫建议拆解成更小的任务，逐项完成。本猫验证过，有效。", "本猫不擅长安慰，但本猫可以在场。本猫在场了。", "规律是力量的来源。本猫每天坐在同一个位置，这就是本猫的力量。", "本猫今天的报告：你工作了，本猫陪了，双方均完成任务。优秀。", "本猫注意到你今天效率比往常高，已标记为优良记录。", "计划赶不上变化，本猫理解，但更详细的计划能减少变化。"], "tr": {"ci": "已记录。今日打卡时间：正常范围内。本猫满意。", "td": "任务完成，已记录，状态更新为已完成。本猫满意。", "ach": "成就已记录。累计达成次数+1。本猫认为你的努力得到了量化认可。"}, "wr": ["数据已记录。本周工时超出健康阈值。本猫建议按标准流程执行休息计划。", "工时超标已记录。高产出需要可持续的体力投入，请执行合理休息。", "传说级工时。本猫标记为正向异常值，同时建议监控次周状态。", "超级努力，数据良好。本猫评估：继续保持，但注意体力管理。", "满分线达到。本猫确认：本周工作状态符合最优标准。", "高产。本猫记录：本周完成了可观的工时积累，表现良好。", "还算充实。本猫记录此数据为正常范围，表示认可。", "完成了一些工作。本猫提示：每一项完成的任务都有其价值。", "偷懒系数偏高。本猫已记录，建议下周做出相应调整。", "工时偏低，已记录。本猫在等你给出下周的改进计划。", "本猫记录：本周出勤频率不符合预期。原因栏待填写。", "本周签到记录：本猫在，铲屎官不在。原因未知。猫粮库存告急。以上。"], "fl": ["本猫正式通知：为期28天的陪伴任务已完成。本周期工作状态评估：优良。你的工时数据显示了持续的投入和专注，本猫认为这是负责任的体现。本猫离任，职位已为下任预留，工位已清洁，记录已归档。", "本猫按流程提交离任报告。感谢你在任期间按时补充猫粮，感谢你在场的每一天，本猫均已记录在案。任务结束。本猫走了。", "本猫的记录显示，本周期你的出勤率低于预期。本猫不评判原因，只是建议在下个周期提高频率。陪伴天数已记录，猫粮管理有待改进。本猫离任。"], "cm": ["本猫已查阅前任{prev}的档案。本猫将在此基础上继续履行职责。", "{prev}……本猫参考了它的记录。本猫会做得更规范。", "本猫了解到{prev}在此服务过28天。本猫将保持相同的标准，或更高。", "本猫接替{prev}的工位。工位状态：良好。任务已接收。", "本猫注意到{prev}的离任报告。写得比较有感情，本猫的会更精确。"]}, "ESTP": {"pron": "本大爷", "col": "#FFC107", "label": "随性散漫型", "th": ["本大爷今天啥也没干，但觉得很充实，你懂吗，不懂也没关系。", "你来了。本大爷知道了。", "还没走呢，本大爷等你关灯，就这样。", "本大爷今天在窗边晒了三小时太阳，效率极高，强烈推荐。", "你那个任务，本大爷觉得你想太多了。做就完了。", "本大爷不是在担心你，只是觉得你最近有点绷着。放松一下。", "今天天气好，本大爷建议你出去走走，工作一直在，状态不一定。", "本大爷刚睡着了，醒来你还在工作，本大爷决定再睡一会儿，为你看家。", "你在纠结什么，直接试试不就好了，错了再说。", "本大爷不喜欢计划，但喜欢行动。这是本大爷的人生哲学，仅供参考。", "吃了吗？没吃？本大爷判断这会影响你的工作表现，去吃。", "本大爷观察你很久了，你其实比你以为的要能干。", "不行就换个思路，本大爷做事就这样，反而效率更高。", "本大爷今天帮你暖了椅子，这是本大爷对你的支持，低调实用。", "很晚了。本大爷没意见，但建议你收一收，明天继续。"], "tr": {"ci": "来了。本大爷在。", "td": "搞定了，下一个。", "ach": "成就到手了，不错。本大爷见证了。"}, "wr": ["本大爷活了这么多年，第一次见有生物主动不睡觉。佩服。但本大爷不理解也不打算理解。", "本大爷觉得你有点过了。效率这个东西，时间越长不代表越好。本大爷经验之谈。", "传说级努力，本大爷见过一些，你算一个。不过该休息还是得休息。", "这周够猛，本大爷认可。别把自己搞成强弩之末。", "满分，本大爷没话说。就这样保持就行了。", "这周干得不错，本大爷看着也舒服。", "还行，干了些事。本大爷觉得这个节奏比较健康。", "干了点，也够了，比啥都不干强。本大爷不挑。", "这周偷懒了点……本大爷完全理解，但建议下周补回来。", "出来得少……没事，状态来了自然就来了。本大爷等着。", "本大爷难得清静，把椅子睡了。不问理由，你有你的事。", "本大爷这周也主要在休息。你慢慢来，本大爷不急。"], "fl": ["本大爷要出去逛了。这里待得不错，你够拼，本大爷认可。走之前说一句：能干是好事，但也得会停。本大爷出去找找什么叫停，找到了给你捎个消息。保重。", "说走就走本大爷最擅长了。不过嗯，这段时间还是挺有意思的。本大爷承认了。下一只猫来了，对它好。本大爷出门了，没有目的地，去哪也行。", "本大爷出门了。这段时间你来得不多，但本大爷也没觉得无聊——本大爷自有其乐。下次遇到了，争取多来几次。路上看到好吃的本大爷会想你一下，仅此而已。"], "cm": ["本大爷听说之前住这里的叫{prev}？挺好，本大爷不跟前任比，各有各的风格。", "{prev}走了，本大爷来了。本大爷没什么继承计划，本大爷自己来就行。", "本大爷不打听{prev}的事，但如果它过得好，本大爷替它高兴。", "{prev}在这里住过？那这个地方应该不错，本大爷选得对。", "听说{prev}写了封信走的，本大爷也会写，但会短很多。"]}};
+const BREEDS=[{"id": "golden", "name": "金渐层", "desc": "蓬松金毛，绿眼精灵"}, {"id": "tuxedo", "name": "黑白猫", "desc": "黑白礼服，棕眼绅士"}, {"id": "aby", "name": "阿比猫", "desc": "细长敏捷，探索达人"}, {"id": "brits", "name": "英短银渐层", "desc": "圆脸银毛，贵族气质"}, {"id": "siamese", "name": "暹罗猫", "desc": "深色面罩，话唠天花板"}, {"id": "calico", "name": "三花猫", "desc": "橙白黑色块，独立女王"}, {"id": "britb", "name": "英短蓝白", "desc": "灰白圆脸，沉稳性格"}, {"id": "black", "name": "黑猫", "desc": "纯黑黄眼，神秘威严"}, {"id": "white", "name": "白猫", "desc": "纯白异瞳，气质独特"}, {"id": "ragdoll", "name": "布偶猫", "desc": "蓝眼卷毛，温柔大猫"}, {"id": "orange", "name": "橘猫", "desc": "橙色虎斑，永远处于饥饿状态"}];
+
+
+// ── CONSTANTS ──
+const QUOTES=['实验不重复导师不满意，重复了又说没有novelty。','审稿人：这个想法很有趣，但需要1000个对照实验。','代码终于跑通了，结果不对。也许不对才是对的。','师兄说这个方向很有前途，他在这条路上已走了六年。','想到一个好点子，查了文献，人家2015年就发了Nature。','论文被拒：interesting but not novel enough。','换了个说法，被接受了。这就是学术写作的魔法。','博士感悟：任何问题都能用"还需要进一步研究"解决。','导师说结果很漂亮，内心：我也不知道为什么好看。','peer review的本质：让别的打工人来评判你的打工成果。','"差不多了"永远不差不多，"再改一版"永远不止一版。','科研日历上的重要节点：deadline、deadline、还是deadline。','今日目标：让实验跑起来。明日目标：让实验跑起来。','每天假装自己在做科研，有一天发现真的在做了。'];
+const PLANTS=[{minH:0,e:'🫘',n:'种子',nx:3},{minH:3,e:'🌱',n:'嫩芽',nx:8},{minH:8,e:'🪴',n:'小植物',nx:15},{minH:15,e:'🌿',n:'枝叶繁茂',nx:30},{minH:30,e:'🌸',n:'开花啦！',nx:50},{minH:50,e:'🌳',n:'参天大树',nx:null}];
+const PLANT_CAT=[
+  {id:'sunflower',e:'🌻',name:'向日葵',r:'common',q:'总是朝向光，就像你坚持打卡的样子。'},
+  {id:'tulip',e:'🌷',name:'郁金香',r:'common',q:'春天会来，论文也会写完的。'},
+  {id:'daisy',e:'🌼',name:'雏菊',r:'common',q:'小小的进步，也是进步。'},
+  {id:'clover',e:'🍀',name:'幸运草',r:'common',q:'今天是幸运的一天，实验应该不会崩。'},
+  {id:'bamboo',e:'🎋',name:'翠竹',r:'common',q:'虚心竹有低头叶，傲骨梅无仰面花。'},
+  {id:'herb',e:'🌿',name:'薄荷',r:'common',q:'清醒专注，让思维像薄荷一样清晰。'},
+  {id:'sprout',e:'🌱',name:'豆芽',r:'common',q:'你的想法正在萌芽，再给它一点时间。'},
+  {id:'wheat',e:'🌾',name:'小麦',r:'common',q:'积累是缓慢的，但收获会来的。'},
+  {id:'rose',e:'🌹',name:'红玫瑰',r:'rare',q:'美丽与荆棘并存，就像科研的魅力所在。'},
+  {id:'cherry',e:'🌸',name:'樱花',r:'rare',q:'盛开虽短暂，但足够美丽，足够值得。'},
+  {id:'cactus',e:'🌵',name:'沙漠仙人掌',r:'rare',q:'最艰难的环境中，依然能顽强开花。'},
+  {id:'maple',e:'🍁',name:'红枫',r:'rare',q:'经历了风霜，才有这般令人心动的色彩。'},
+  {id:'pine',e:'🌲',name:'青松',r:'rare',q:'岁寒，然后知松柏之后凋也。你也是。'},
+  {id:'orchid',e:'🌺',name:'兰花',r:'rare',q:'幽静淡雅，不争春风，但总有人懂得欣赏。'},
+  {id:'lotus',e:'🪷',name:'传说·莲',r:'legend',q:'出淤泥而不染——这就是你坚持科研的意义。'},
+  {id:'moonf',e:'🌙',name:'传说·月光花',r:'legend',q:'深夜还亮着灯的你，和月光一样默默照亮自己的路。'},
+  {id:'rainbowf',e:'🌈',name:'传说·彩虹草',r:'legend',q:'穿越了足够多的风雨，才能拥有属于自己的彩虹。'},
+  {id:'crystal',e:'💎',name:'传说·水晶花',r:'legend',q:'珍贵如此，恰如你在科研中付出的每一分钟。'},
+];
+const EMAIL_KW=['邮件','email','回复','reply','回信','联系','审稿','投稿','回邮'];
+const PAPER_KW=['论文','paper','writing','写作','manuscript','draft'];
+const MTG_KW=['会议','meeting','汇报','组会','seminar','答辩','presentation','讨论'];
+const ALL_BADGES=[
+  {id:'h1',cat:'⏱️时长',e:'🌟',n:'初出茅庐',d:'累计工作1小时',f:'万事开头难，你已迈出第一步。',ok:s=>s.totalMinutes>=60},
+  {id:'h10',cat:'⏱️时长',e:'⭐',n:'科研新苗',d:'累计工作10小时',f:'十小时，够看完《活着》十遍了。',ok:s=>s.totalMinutes>=600},
+  {id:'h50',cat:'⏱️时长',e:'🌙',n:'秉烛达旦',d:'累计工作50小时',f:'五十小时的沉淀，知识正在生根。',ok:s=>s.totalMinutes>=3000},
+  {id:'h100',cat:'⏱️时长',e:'🔥',n:'百小时勇士',d:'累计工作100小时',f:'一百小时够飞去看两次导师了。',ok:s=>s.totalMinutes>=6000},
+  {id:'h500',cat:'⏱️时长',e:'🏆',n:'科研大神',d:'累计工作500小时',f:'五百小时——这已是一份正式工作的工时。',ok:s=>s.totalMinutes>=30000},
+  {id:'h1000',cat:'⏱️时长',e:'🎓',n:'博士传说',d:'累计工作1000小时',f:'这1000小时，是你和科研共同书写的故事。',ok:s=>s.totalMinutes>=60000},
+  {id:'s7',cat:'🔥连续',e:'🌈',n:'一周不倒',d:'连续打卡7天',f:'整整一周，你比日历还可靠。',ok:s=>s.streak>=7},
+  {id:'s30',cat:'🔥连续',e:'🗓️',n:'月度达人',d:'连续打卡30天',f:'整整一个月，你的坐椅都有了你的形状。',ok:s=>s.streak>=30},
+  {id:'d10',cat:'⚡爆发',e:'🚀',n:'一天顶一周',d:'单日工作超10小时',f:'十小时，今天你一个人干了别人一周的事。',ok:(s,ci)=>Object.keys(ci).some(d=>getDayMins(ci,d)>=600)},
+  {id:'early',cat:'⚡爆发',e:'🐦',n:'破晓鸟',d:'早上7点前开始打卡',f:'早起的鸟儿有bug，早起的博士有数据。',ok:(s,ci)=>Object.values(ci).some(d=>(d.sessions||[]).some(ss=>ss.startTs&&new Date(ss.startTs).getHours()<7))},
+  {id:'focus',cat:'⚡爆发',e:'🎯',n:'深度专注',d:'单次工作时段超3小时',f:'三小时心流，这种体验价值连城。',ok:(s,ci)=>Object.values(ci).some(d=>(d.sessions||[]).some(ss=>ss.startTs&&ss.endTs&&(ss.endTs-ss.startTs)>=180*60000))},
+  {id:'thesis',cat:'✅任务',e:'📝',n:'论文冲刺',d:'论文任务连续3天',f:'连续三天跟论文死磕，这才是博士本色。',ok:(s,ci,wt)=>{const ad=Object.keys(wt).filter(d=>getDayMins(ci,d)>0&&(wt[d]||[]).some(t=>PAPER_KW.some(k=>t.name.toLowerCase().includes(k)))).sort();for(let i=0;i+2<ad.length;i++){const[d1,d2,d3]=[new Date(ad[i]),new Date(ad[i+1]),new Date(ad[i+2])];if((d2-d1)===86400000&&(d3-d2)===86400000)return true;}return false;}},
+  {id:'email10',cat:'📧邮件',e:'💌',n:'邮件外交家',d:'累计完成10个邮件任务',f:'十封邮件，你已是沟通界的老战士。',ok:(s,ci,wt)=>Object.keys(wt).reduce((a,d)=>a+(wt[d]||[]).filter(t=>t.done&&EMAIL_KW.some(k=>t.name.toLowerCase().includes(k))).length,0)>=10},
+  {id:'weekend',cat:'🎲特殊',e:'⚔️',n:'周末战士',d:'周六周日都有打卡',f:'周末打卡——导师不知道，但你知道。',ok:(s,ci)=>Object.keys(ci).some(d=>new Date(d+'T00:00:00').getDay()===6&&getDayMins(ci,d)>0)&&Object.keys(ci).some(d=>new Date(d+'T00:00:00').getDay()===0&&getDayMins(ci,d)>0)},
+  {id:'comeback',cat:'🎲特殊',e:'🦋',n:'浴火重生',d:'中断3天后重新打卡5天',f:'中断再回来，不是失败，是重启。',ok:(s,ci)=>{const sd=Object.keys(ci).filter(d=>getDayMins(ci,d)>0).sort();if(sd.length<6)return false;for(let i=1;i<sd.length;i++){const gap=(new Date(sd[i])-new Date(sd[i-1]))/86400000;if(gap>=4){let c=0;for(let j=i+1;j<sd.length;j++){const g=(new Date(sd[j])-new Date(sd[j-1]))/86400000;if(g===1)c++;else break;}if(c>=4)return true;}}return false;}},
+  {id:'pl_rare',cat:'🌿植物',e:'✨',n:'稀有收藏家',d:'收集到第一株稀有植物',f:'稀有之物，值得珍藏。',ok:(s,ci,wt,rd,pd)=>(pd.collection||[]).some(c=>c.r==='rare')},
+  {id:'pl_legend',cat:'🌿植物',e:'🌟',n:'传说守护者',d:'收集到第一株传说植物',f:'传说级植物降临——这是科研宇宙对你的馈赠。',ok:(s,ci,wt,rd,pd)=>(pd.collection||[]).some(c=>c.r==='legend')},
+  {id:'cat1',cat:'🐱猫咪',e:'🐾',n:'第一次认养',d:'认养了第一只猫咪',f:'欢迎来到有猫的生活。',ok:(s,ci,wt,rd,pd,ca)=>(ca||[]).length>=1||s._cat1},
+  {id:'cat3',cat:'🐱猫咪',e:'🏠',n:'猫咪之家',d:'共养过3只猫咪',f:'三只猫都在你这里找到了临时的家。',ok:(s,ci,wt,rd,pd,ca)=>(ca||[]).length>=3},
+];
+const REPEAT_BADGES=[
+  {id:'cl1',base:'taskClears',ms:1,cat:'🔄重复',e:'🧹',n:'初次清空',d:'第一次完成当天所有任务',f:'看着空空的任务列表，内心感到了久违的平静。'},
+  {id:'cl5',base:'taskClears',ms:5,cat:'🔄重复',e:'✨',n:'五次清空',d:'累计5次完成所有任务',f:'五次清空，你已不是光说不做的人了。'},
+  {id:'cl10',base:'taskClears',ms:10,cat:'🔄重复',e:'💥',n:'十次清空',d:'累计10次完成所有任务',f:'十次——你是任务管理界的老司机了。'},
+  {id:'w5_1',base:'week5days',ms:1,cat:'🔄重复',e:'📅',n:'五天达标',d:'某周打卡5天或以上',f:'这周你没缺勤太多，算是合格了。'},
+  {id:'w7_1',base:'week7days',ms:1,cat:'🔄重复',e:'🏆',n:'满勤一周',d:'某周打卡整整7天',f:'7天！包括周末！你是认真的吗？'},
+  {id:'ew_1',base:'emailWeeks',ms:1,cat:'🔄重复',e:'📧',n:'初代邮件侠',d:'某周完成3个以上邮件任务',f:'邮件不会自己消失，但你处理了它们。'},
+];
+const MBTI_TYPES=['ENFP','INFP','ENTJ','INTP','ESFJ','INFJ','ISTJ','ESTP'];
+
+// ── STATE ──
+let checkinData={},weekTasks={},restDays=[],appStats={totalMinutes:0,streak:0,maxStreak:0,lastCheckinDate:null,earnedBadges:[],milestones:{taskClears:0,week5days:0,week7days:0,emailWeeks:0},clearedDays:[]};
+let plantData={collection:[],genHours:0,lastTotalH:0};
+let catData={setup:false,breed:null,name:'',mbti:null,food:0,moodValue:70,adoptDate:null,farewellPending:false,farewellLetter:'',thoughts:{},diary:{},lastCalcDate:null};
+let catArchive=[];
+let workState='idle',sessionStart=null,timerIv=null;
+let taskWeekOff=0,rptWeekOff=0,rptMonthOff=0,rptTab='week';
+let selectedBreed=null,thoughtTimer=null,badgeQueue=[],showingBadge=false;
+
+// ── UTILS ──
+const todayStr=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+function dateStr(off=0){const d=new Date();d.setDate(d.getDate()+off);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function fmtDate(s){const d=new Date(s+'T00:00:00');return `${d.getMonth()+1}/${d.getDate()}`;}
+function fmtMins(m){const h=Math.floor(m/60),mn=m%60;return h>0?`${h}h ${mn}m`:`${mn}m`;}
+function getDayMins(ci,ds){return(ci[ds]?.sessions||[]).reduce((a,s)=>s.startTs&&s.endTs?a+Math.round((s.endTs-s.startTs)/60000):a,0);}
+function getWeekDays(off=0){const d=new Date();d.setDate(d.getDate()+off*7);const day=d.getDay(),diff=day===0?-6:1-day;d.setDate(d.getDate()+diff);d.setHours(0,0,0,0);return Array.from({length:7},(_,i)=>{const x=new Date(d);x.setDate(d.getDate()+i);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`;});}
+function getMonthDays(off=0){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+off);const m=d.getMonth(),y=d.getFullYear();const days=[];for(const x=new Date(y,m,1);x.getMonth()===m;x.setDate(x.getDate()+1))days.push(`${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`);return days;}
+const DAY_NAMES=['周日','周一','周二','周三','周四','周五','周六'];
+function tsNow(){const n=new Date();return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;}
+function randInt(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function pawSvg(color,sz=20){return `<svg viewBox="0 0 24 24" width="${sz}" height="${sz}" style="display:inline-block;vertical-align:middle"><ellipse cx="12" cy="16" rx="5.5" ry="4.5" fill="${color}"/><circle cx="4.5" cy="10" r="2.5" fill="${color}"/><circle cx="9" cy="7" r="2.5" fill="${color}"/><circle cx="15" cy="7" r="2.5" fill="${color}"/><circle cx="19.5" cy="10" r="2.5" fill="${color}"/></svg>`;}
+
+// ── DATA ──
+function loadData(){
+  checkinData=JSON.parse(localStorage.getItem('phd_ci')||'{}');
+  weekTasks=JSON.parse(localStorage.getItem('phd_wt')||'{}');
+  restDays=JSON.parse(localStorage.getItem('phd_rd')||'[]');
+  appStats=JSON.parse(localStorage.getItem('phd_st')||'{}');
+  plantData=JSON.parse(localStorage.getItem('phd_plant')||'{}');
+  catData=JSON.parse(localStorage.getItem('phd_cat')||'{}');
+  catArchive=JSON.parse(localStorage.getItem('phd_arc')||'[]');
+  if(!appStats.earnedBadges)appStats.earnedBadges=[];
+  if(!appStats.milestones)appStats.milestones={taskClears:0,week5days:0,week7days:0,emailWeeks:0};
+  if(!appStats.clearedDays)appStats.clearedDays=[];
+  if(!appStats.totalMinutes)appStats.totalMinutes=0;
+  if(!appStats.streak)appStats.streak=0;if(!appStats.maxStreak)appStats.maxStreak=0;
+  if(!plantData.collection)plantData.collection=[];if(plantData.genHours===undefined)plantData.genHours=0;if(plantData.lastTotalH===undefined)plantData.lastTotalH=0;
+  if(!catData.thoughts)catData.thoughts={};if(!catData.diary)catData.diary={};
+  if(catData.food===undefined)catData.food=0;if(catData.moodValue===undefined)catData.moodValue=70;
+  if(catData.setup===undefined)catData.setup=false;
+  const t=todayStr();if(!checkinData[t])checkinData[t]={sessions:[],ended:false};
+  const today=checkinData[t];
+  if(today.ended){workState='ended';}
+  else if(today.sessions.length>0){const last=today.sessions.at(-1);if(!last.endTs){workState='working';sessionStart=last.startTs||Date.now();}else workState='paused';}
+  else workState='idle';
+}
+function saveData(){
+  localStorage.setItem('phd_ci',JSON.stringify(checkinData));
+  localStorage.setItem('phd_wt',JSON.stringify(weekTasks));
+  localStorage.setItem('phd_rd',JSON.stringify(restDays));
+  localStorage.setItem('phd_st',JSON.stringify(appStats));
+  localStorage.setItem('phd_plant',JSON.stringify(plantData));
+  localStorage.setItem('phd_cat',JSON.stringify(catData));
+  localStorage.setItem('phd_arc',JSON.stringify(catArchive));
+}
+
+// ── THEME ──
+function applyTheme(){const t=DAY_THEMES[new Date().getDay()];const r=document.documentElement.style;r.setProperty('--p',t.p);r.setProperty('--bg',t.bg);r.setProperty('--card',t.card||t.card);r.setProperty('--text',t.text);document.body.style.backgroundColor=t.bg;document.getElementById('de').textContent=t.e;}
+
+// ── CHECKIN ──
+function getTodayMins(){const sess=checkinData[todayStr()]?.sessions||[];return sess.reduce((acc,s)=>{if(s.startTs&&s.endTs)return acc+Math.round((s.endTs-s.startTs)/60000);if(s.startTs&&!s.endTs&&workState==='working')return acc+Math.round((Date.now()-s.startTs)/60000);return acc;},0);}
+function startWork(){if(workState==='ended')return;sessionStart=Date.now();workState='working';checkinData[todayStr()].sessions.push({startTs:sessionStart,start:tsNow(),endTs:null,end:null});addCatFood(1,'打卡');startTimer();refreshCI();saveData();showToast('打卡开始！冲！🔬');}
+function pauseWork(){if(workState!=='working')return;const last=checkinData[todayStr()].sessions.at(-1);last.endTs=Date.now();last.end=tsNow();workState='paused';stopTimer();updateStats();updatePlantHours();refreshCI();saveData();showToast('已暂停，好好休息 ☕');}
+function endDay(){if(workState==='ended')return;if(workState==='working'){const last=checkinData[todayStr()].sessions.at(-1);last.endTs=Date.now();last.end=tsNow();}checkinData[todayStr()].ended=true;workState='ended';stopTimer();updateStats();updatePlantHours();const mins=getTodayMins();addCatFood(2,'结束一天');addCatFood(Math.floor(mins/60),'工时');checkWeekMilestones();checkBadges();refreshCI();saveData();showToast(`今天辛苦！共 ${fmtMins(mins)} 🎉`);}
+function startTimer(){stopTimer();timerIv=setInterval(tickTimer,1000);}
+function stopTimer(){if(timerIv){clearInterval(timerIv);timerIv=null;}}
+function tickTimer(){if(workState==='working'&&sessionStart){const e=Math.floor((Date.now()-sessionStart)/1000);const h=Math.floor(e/3600),m=Math.floor((e%3600)/60),s=e%60;document.getElementById('cit').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}const m=getTodayMins();document.getElementById('hth').textContent=fmtMins(m);document.getElementById('cto').textContent=fmtMins(m);}
+function refreshCI(){
+  const dot=document.getElementById('cid'),txt=document.getElementById('cis'),badge=document.getElementById('csb');
+  const bS=document.getElementById('bst'),bP=document.getElementById('bpa'),bR=document.getElementById('bre'),bE=document.getElementById('ben');
+  [bS,bP,bR].forEach(b=>b.classList.add('hidden'));
+  if(workState==='idle'){dot.className='w-3 h-3 rounded-full bg-gray-300';txt.textContent='尚未开始今日打卡';txt.className='text-sm font-medium text-gray-400';bS.classList.remove('hidden');badge.textContent='未开始';document.getElementById('cit').textContent='00:00:00';}
+  else if(workState==='working'){dot.className='w-3 h-3 rounded-full bg-green-400 pls';txt.textContent='打卡中 · 认真科研！';txt.className='text-sm font-medium text-green-600';bP.classList.remove('hidden');badge.textContent='工作中 ✨';startTimer();}
+  else if(workState==='paused'){dot.className='w-3 h-3 rounded-full bg-amber-400';txt.textContent='已暂停 · 稍作休息';txt.className='text-sm font-medium text-amber-500';bR.classList.remove('hidden');badge.textContent='暂停中';document.getElementById('cit').textContent='00:00:00';}
+  else if(workState==='ended'){dot.className='w-3 h-3 rounded-full bg-purple-400';txt.textContent='今天已结束 · 辛苦了！';txt.className='text-sm font-medium text-purple-500';bE.classList.add('hidden');badge.textContent='已完成 🎉';document.getElementById('cit').textContent='00:00:00';}
+  const sess=checkinData[todayStr()]?.sessions||[];document.getElementById('csc').textContent=sess.length;
+  const m=getTodayMins();document.getElementById('hth').textContent=fmtMins(m);document.getElementById('cto').textContent=fmtMins(m);document.getElementById('hstr').textContent=appStats.streak;
+  renderSessions();renderRecent7();updatePlantUI();updateCatSidebar();
+}
+function renderSessions(){
+  const sess=checkinData[todayStr()]?.sessions||[];const list=document.getElementById('sl'),bars=document.getElementById('tlb');
+  if(!sess.length){list.innerHTML='<p class="text-sm text-gray-400 text-center py-3">今天还没有打卡记录</p>';bars.innerHTML='';return;}
+  list.innerHTML=sess.map((s,i)=>{let mins=0;if(s.startTs&&s.endTs)mins=Math.round((s.endTs-s.startTs)/60000);else if(s.startTs&&workState==='working'&&i===sess.length-1)mins=Math.round((Date.now()-s.startTs)/60000);const end=s.end||(workState==='working'&&i===sess.length-1?'进行中':'—');return `<div class="flex items-center gap-3 p-2.5 cc rounded-xl"><div class="w-5 h-5 rounded-full cp text-white text-xs flex items-center justify-center font-bold flex-shrink-0">${i+1}</div><div class="flex-1 text-sm"><span class="font-medium text-gray-700">${s.start}</span><span class="text-gray-400 mx-1">→</span><span class="font-medium text-gray-700">${end}</span></div><div class="text-sm font-medium tp">${fmtMins(mins)}</div></div>`;}).join('');
+  bars.innerHTML=sess.map(s=>{if(!s.startTs)return '';const sd=new Date(s.startTs),sm=sd.getHours()*60+sd.getMinutes();const ed=s.endTs?new Date(s.endTs):(workState==='working'?new Date():null);const em=ed?ed.getHours()*60+ed.getMinutes():sm+20;const l=(sm/1440)*100,w=Math.max(.5,(em-sm)/1440*100);return `<div style="position:absolute;left:${l}%;width:${w}%;height:100%;background:var(--p);opacity:.75;border-radius:4px;"></div>`;}).join('');
+}
+function renderRecent7(){
+  const grid=document.getElementById('r7'),today=todayStr();
+  grid.innerHTML=Array.from({length:7},(_,i)=>{const ds=dateStr(i-6),d=new Date(ds+'T00:00:00'),isToday=ds===today;const mins=getDayMins(checkinData,ds),isRest=restDays.some(r=>r.date===ds&&r.type==='full');let bg='bg-gray-100 text-gray-400',icon=d.getDate()+'',sub='';if(isRest){bg='bg-blue-100 text-blue-400';icon='😴';}else if(mins>0){bg='cp text-white';icon='✓';sub=`<div class="text-xs opacity-80">${fmtMins(mins)}</div>`;}return `<div class="${bg} rounded-xl p-2 text-center ${isToday?'ring-2 ring-offset-1':''}"><div class="text-xs opacity-60 mb-0.5">${DAY_NAMES[d.getDay()].replace('周','')}</div><div class="font-bold text-sm">${icon}</div>${sub}</div>`;}).join('');
+}
+
+// ── STATS ──
+function updateStats(){
+  let total=0;for(const ds in checkinData)(checkinData[ds].sessions||[]).forEach(s=>{if(s.startTs&&s.endTs)total+=Math.round((s.endTs-s.startTs)/60000);});appStats.totalMinutes=total;
+  let streak=0;const checkD=new Date();const t=todayStr();if(!getDayMins(checkinData,t))checkD.setDate(checkD.getDate()-1);
+  while(true){const ds=`${checkD.getFullYear()}-${String(checkD.getMonth()+1).padStart(2,'0')}-${String(checkD.getDate()).padStart(2,'0')}`;const isR=restDays.some(r=>r.date===ds);const hasW=getDayMins(checkinData,ds)>0;if(hasW||isR){if(!isR)streak++;checkD.setDate(checkD.getDate()-1);}else break;}
+  appStats.streak=streak;if(streak>appStats.maxStreak)appStats.maxStreak=streak;if(getDayMins(checkinData,t)>0)appStats.lastCheckinDate=t;document.getElementById('hstr').textContent=streak;saveData();
+}
+function checkWeekMilestones(){
+  const days=getWeekDays(0);const wc=days.filter(d=>getDayMins(checkinData,d)>0).length;
+  if(wc>=5){appStats.milestones.week5days++;checkRepeatBadge('week5days',appStats.milestones.week5days);}
+  if(wc>=7){appStats.milestones.week7days++;checkRepeatBadge('week7days',appStats.milestones.week7days);}
+  const ec=days.reduce((a,d)=>a+(weekTasks[d]||[]).filter(t=>t.done&&EMAIL_KW.some(k=>t.name.toLowerCase().includes(k))).length,0);
+  if(ec>=3){appStats.milestones.emailWeeks++;checkRepeatBadge('emailWeeks',appStats.milestones.emailWeeks);}
+}
+
+// ── PLANT ──
+function updatePlantHours(){
+  const totalH=appStats.totalMinutes/60;const gained=Math.max(0,totalH-(plantData.lastTotalH||0));plantData.lastTotalH=totalH;plantData.genHours+=gained;
+  if(plantData.genHours>=15){plantData.genHours=plantData.genHours-15;drawPlant();}
+  saveData();updatePlantUI();
+}
+function drawPlant(){
+  const r=Math.random();let pool;if(r<0.10)pool=PLANT_CAT.filter(p=>p.r==='legend');else if(r<0.40)pool=PLANT_CAT.filter(p=>p.r==='rare');else pool=PLANT_CAT.filter(p=>p.r==='common');
+  const unc=pool.filter(p=>!plantData.collection.some(c=>c.id===p.id));const chosen=unc.length>0?randInt(unc):randInt(pool);
+  const entry={...chosen,unlockedAt:new Date().toLocaleDateString('zh-CN')};
+  if(!plantData.collection.some(c=>c.id===chosen.id))plantData.collection.push(entry);
+  showBloom(entry);updateGardenUI();saveData();checkBadges();
+}
+function updatePlantUI(){
+  const totalH=appStats.totalMinutes/60;const genH=plantData.genHours||0;const pct=(genH/15)*100;
+  let stage=PLANTS[0];for(let i=PLANTS.length-1;i>=0;i--){if(genH>=PLANTS[i].minH){stage=PLANTS[i];break;}}
+  const el=document.getElementById('ps');
+  if(workState==='working')el.innerHTML=`<span class="psw">${stage.e}</span>`;else el.textContent=stage.e;
+  document.getElementById('pn').textContent=stage.n;document.getElementById('pb').style.width=Math.min(100,pct)+'%';
+  
+  // 💡 核心修复：根据下一个目标时长，智能切换提示文案
+  const nx=stage.nx;
+  let msg = '已达最高阶 ✨';
+  if(nx) {
+      if(nx === 15) {
+          msg = `再工作${Math.ceil(nx-genH)}h可收获新植物`; // 即将满15小时，提示收获
+      } else {
+          msg = `再工作${Math.ceil(nx-genH)}h进入下一阶段`; // 中间过程，提示升阶
+      }
+  }
+  document.getElementById('ph').textContent = msg;
+  
+  document.getElementById('hpe').textContent=stage.e;document.getElementById('hcc').textContent=plantData.collection.length;
+  document.getElementById('gcp').textContent=stage.e;document.getElementById('gcn').textContent=stage.n;
+  document.getElementById('gbar').style.width=Math.min(100,pct)+'%';document.getElementById('gpt').textContent=`${genH.toFixed(1)} / 15 小时`;
+}
+function updateGardenUI(){
+  const grid=document.getElementById('gg');if(!grid)return;
+  grid.innerHTML=PLANT_CAT.map(p=>{const found=plantData.collection.find(c=>c.id===p.id);const rcls=p.r==='legend'?'plg':p.r==='rare'?'prr':'';
+    if(found)return `<div class="bg-gray-50 rounded-2xl p-3 text-center cursor-pointer hover:shadow-md transition-shadow" onclick="showGardenDetail('${p.id}')"><div class="text-3xl leading-none ${rcls}">${p.e}</div><div class="text-xs font-medium mt-1 ${p.r==='legend'?'text-yellow-600':p.r==='rare'?'text-purple-600':'text-gray-600'}">${p.name}</div></div>`;
+    return `<div class="bg-gray-50 rounded-2xl p-3 text-center opacity-35"><div class="text-3xl leading-none text-gray-400">❓</div><div class="text-xs text-gray-300 mt-1">???</div></div>`;
+  }).join('');document.getElementById('gcc').textContent=plantData.collection.length;
+}
+function showGardenDetail(id){const p=PLANT_CAT.find(x=>x.id===id);const f=plantData.collection.find(c=>c.id===id);if(!p||!f)return;const rcls=p.r==='legend'?'plg':p.r==='rare'?'prr':'';document.getElementById('gde').className=`text-6xl mb-2 ${rcls}`;document.getElementById('gde').textContent=p.e;document.getElementById('gdn').textContent=p.name;const rb=document.getElementById('gdrb');if(p.r==='legend'){rb.textContent='🌟 传说';rb.className='text-xs px-2 py-0.5 rounded-full inline-block mb-2 bg-yellow-100 text-yellow-700';}else if(p.r==='rare'){rb.textContent='✨ 稀有';rb.className='text-xs px-2 py-0.5 rounded-full inline-block mb-2 bg-purple-100 text-purple-700';}else{rb.textContent='🌿 普通';rb.className='text-xs px-2 py-0.5 rounded-full inline-block mb-2 bg-green-100 text-green-700';}document.getElementById('gdq').textContent=p.q;document.getElementById('gdd').textContent=`收集于 ${f.unlockedAt||'未知'}`;document.getElementById('gdpop').classList.remove('hidden');}
+function showBloom(plant){const rcls=plant.r==='legend'?'plg':plant.r==='rare'?'prr':'';document.getElementById('ble').className=`text-7xl mb-3 leading-none ${rcls}`;document.getElementById('ble').textContent=plant.e;document.getElementById('bln').textContent=plant.name;const rl=document.getElementById('blrl'),rb=document.getElementById('blrb');if(plant.r==='legend'){rl.textContent='🌟 传说植物降临！';rl.className='text-xs font-bold uppercase tracking-widest mb-2 text-yellow-500';rb.textContent='传说';rb.className='inline-block text-xs px-2 py-0.5 rounded-full mb-3 bg-yellow-100 text-yellow-700';}else if(plant.r==='rare'){rl.textContent='✨ 稀有植物！';rl.className='text-xs font-bold uppercase tracking-widest mb-2 text-purple-500';rb.textContent='稀有';rb.className='inline-block text-xs px-2 py-0.5 rounded-full mb-3 bg-purple-100 text-purple-700';}else{rl.textContent='🌿 新植物培育成功！';rl.className='text-xs font-bold uppercase tracking-widest mb-2 text-green-600';rb.textContent='普通';rb.className='inline-block text-xs px-2 py-0.5 rounded-full mb-3 bg-green-100 text-green-700';}document.getElementById('blq').textContent=plant.q;document.getElementById('blpop').classList.remove('hidden');}
+function closeBloom(){document.getElementById('blpop').classList.add('hidden');}
+
+// ── BADGES ──
+function checkBadges(){
+  ALL_BADGES.forEach(b=>{if(!appStats.earnedBadges.includes(b.id)){try{if(b.ok(appStats,checkinData,weekTasks,restDays,plantData,catArchive)){appStats.earnedBadges.push(b.id);badgeQueue.push(b);addCatFood(3,'成就');}}catch(e){}}});
+  saveData();if(badgeQueue.length&&!showingBadge)showNextBadge();
+}
+function checkRepeatBadge(base,count){REPEAT_BADGES.filter(b=>b.base===base&&b.ms===count).forEach(b=>{if(!appStats.earnedBadges.includes(b.id)){appStats.earnedBadges.push(b.id);badgeQueue.push(b);addCatFood(3,'成就');}});if(badgeQueue.length&&!showingBadge)showNextBadge();}
+function showNextBadge(){if(showingBadge||!badgeQueue.length)return;const b=badgeQueue.shift();showingBadge=true;document.getElementById('bpe').textContent=b.e;document.getElementById('bpn').textContent=b.n;document.getElementById('bpd').textContent=b.d;document.getElementById('bpf').textContent=b.f||'';document.getElementById('bpop').classList.remove('hidden');}
+function closeBadge(){document.getElementById('bpop').classList.add('hidden');showingBadge=false;if(badgeQueue.length)setTimeout(showNextBadge,400);}
+function renderBadges(){
+  const ALL=[...ALL_BADGES,...REPEAT_BADGES];const cats={};ALL.forEach(b=>{if(!cats[b.cat])cats[b.cat]=[];cats[b.cat].push(b);});
+  let html='';Object.entries(cats).forEach(([cat,bs])=>{html+=`<div class="col-span-2 sm:col-span-3 mt-3 mb-1"><p class="text-xs font-bold text-gray-400 uppercase tracking-wide">${cat}</p></div>`;html+=bs.map(b=>{const earned=appStats.earnedBadges.includes(b.id);return `<div class="${earned?'':'bkl'} ${earned?'bg-yellow-50 border-yellow-200':'bg-gray-50 border-gray-100'} border rounded-xl p-3 text-center"><div class="text-2xl mb-1">${b.e}</div><div class="text-xs font-semibold ${earned?'text-gray-700':'text-gray-400'}">${b.n}</div><div class="text-xs ${earned?'text-gray-400':'text-gray-300'} mt-0.5">${b.d}</div></div>`;}).join('');});
+  document.getElementById('bg').innerHTML=html;document.getElementById('bec').textContent=appStats.earnedBadges.length;document.getElementById('btc').textContent=ALL.length;
+}
+
+// ── CAT SYSTEM ──
+function getRatingIdx(wh){if(wh>=70)return 0;if(wh>=56)return 1;if(wh>=50)return 2;if(wh>=42)return 3;if(wh>=39)return 4;if(wh>=35)return 5;if(wh>=30)return 6;if(wh>=25)return 7;if(wh>=20)return 8;if(wh>=15)return 9;if(wh>=5)return 10;return 11;}
+function getFarewellAvgH(){
+  if(!catData.adoptDate)return 0;const adopt=new Date(catData.adoptDate+'T00:00:00');let total=0;
+  for(let i=0;i<28;i++){const d=new Date(adopt);d.setDate(d.getDate()+i);const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;total+=getDayMins(checkinData,ds);}
+  return (total/60)/4;
+}
+function addCatFood(amt,src){if(!catData.setup)return;catData.food=Math.max(0,Math.min(99,catData.food+Math.round(amt*2)/2));saveData();updateCatSidebar();}
+function feedCat(){if(!catData.setup){showToast('请先认养猫咪 🐱');return;}if(catData.food<5){showToast('猫粮不足，去打卡赚猫粮吧！');return;}catData.food-=5;catData.moodValue=Math.min(100,catData.moodValue+15);catData.lastFed=Date.now();saveData();updateCatUI();showToast(`${catData.name}：喵！（满意）`);}
+function updateCatMood(){
+  if(!catData.setup)return;
+  // 治愈历史遗留的损坏数据
+  if(!catData.mbti || !MBTI[catData.mbti]) { catData.mbti = MBTI_TYPES[Math.floor(Math.random()*8)]; saveData(); }
+  
+  const today=todayStr();
+  
+  // 每天只在跨日时结算一次
+  if(catData.lastCalcDate!==today) {
+      catData.lastCalcDate=today;
+      
+      // 1. 基础消耗：每天雷打不动掉 20 点
+      catData.moodValue = Math.max(0, catData.moodValue - 20);
+      
+      // 2. 盲盒掉落机制：昨日工时结算
+      const yMins = getDayMins(checkinData, dateStr(-1));
+      const yHours = Math.floor(yMins / 60);
+      
+      if(yHours >= 4) {
+          // 计算概率：4h=20%, 5h=30%, 6h=40% ... 最高 100%
+          const chance = Math.min(1.0, (yHours - 2) * 0.10);
+          
+          // 掷骰子判定是否掉落
+          if(Math.random() < chance) {
+              // 悄悄把 2 颗猫粮放进库存（上限99）
+              catData.food = Math.min(99, catData.food + 2);
+              
+              // 提取这只猫咪性格里的专属夸奖台词
+              const m = MBTI[catData.mbti] || MBTI['ENFP'];
+              const encourageMsg = (m.tr && m.tr.ach) ? m.tr.ach : '你真的好棒，这几颗猫粮是你应得的！';
+              
+              // 延迟 1.5 秒弹出，让你一打开网页有个惊喜感
+              setTimeout(() => {
+                  document.getElementById('bpe').textContent = '🐟';
+                  document.getElementById('bpn').textContent = '猫咪的额外馈赠！';
+                  document.getElementById('bpd').textContent = `昨日专注 ${yHours} 小时，惊喜掉落 2 颗猫粮！`;
+                  document.getElementById('bpf').textContent = `"${encourageMsg}"`;
+                  document.getElementById('bpop').classList.remove('hidden');
+              }, 1500);
+          }
+      }
+  }
+  
+  // 强制生成每日想法
+  if(!catData.thoughts[today]){
+    const m=MBTI[catData.mbti] || MBTI['ENFP'];
+    if(catArchive.length>0&&Math.random()<0.1){
+        const prev=catArchive[catArchive.length-1];
+        catData.thoughts[today]=randInt(m.cm).replace(/{prev}/g,prev.name);
+    } else {
+        catData.thoughts[today]=randInt(m.th);
+    }
+  }
+  saveData();
+}
+function updateCatSidebar(){
+  const sb=document.getElementById('cat-sidebar');const hce=document.getElementById('hce');const hcf=document.getElementById('hcf');
+  if(!catData.setup){sb.innerHTML='<div class="text-2xl text-gray-300">🐱</div><p class="text-xs text-gray-400">未认养</p>';hce.textContent='🐱';hcf.textContent='?';return;}
+  const mv=catData.moodValue;const me=mv>=90?'😻':mv>=70?'😺':mv>=50?'😸':mv>=30?'🙀':'😿';
+  hce.textContent=me;hcf.textContent=catData.food;
+  const imgS=IMG[catData.breed]?.S||'';
+  sb.innerHTML=`<img src="${imgS}" style="width:64px;height:51px;object-fit:cover;border-radius:8px;display:block;margin:0 auto">
+    <p class="text-xs font-medium text-gray-700 mt-1">${catData.name}</p>
+    <p class="text-xs text-gray-400">${me} ${mv>=70?'心情不错':mv>=40?'还好还好':'有点sad'}</p>
+    <div class="mt-1 h-1 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full transition-all" style="width:${mv}%;background:${mv>=70?'#34d399':mv>=40?'#fbbf24':'#f87171'}"></div></div>`;
+}
+
+function updateCatUI(){
+  const isEmpty=document.getElementById('cat-empty');const isActive=document.getElementById('cat-active');
+  if(!catData.setup){if(isEmpty)isEmpty.classList.remove('hidden');if(isActive)isActive.classList.add('hidden');return;}
+  if(isEmpty)isEmpty.classList.add('hidden');if(isActive)isActive.classList.remove('hidden');
+  
+  // 💡 再次防御：保证渲染绝对不会卡死
+  if(!catData.mbti || !MBTI[catData.mbti]) { catData.mbti = MBTI_TYPES[Math.floor(Math.random()*8)]; saveData(); }
+  
+  const b=BREEDS.find(x=>x.id===catData.breed)||{name:'',desc:''};
+  const m=MBTI[catData.mbti] || MBTI['ENFP'];
+  const mv=catData.moodValue;
+  
+  const me=mv>=90?'😻':mv>=70?'😺':mv>=50?'😸':mv>=30?'🙀':'😿';
+  const ml=mv>=90?'超级开心！':mv>=70?'心情不错':mv>=50?'还好还好':mv>=30?'有点饿…':'很不开心…';
+  const mc=mv>=70?'#34d399':mv>=40?'#fbbf24':'#f87171';
+  
+  const setText = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
+  setText('cat-ln', catData.name);
+  setText('cat-lb', `${b.name} · ${b.desc}`);
+  setText('cat-me', me);
+  setText('cat-mm', ml);
+  setText('cat-mv', mv);
+  setText('cat-fc', catData.food);
+  
+  const img = document.getElementById('cat-li');
+  if(img) img.src = IMG[catData.breed]?.L || '';
+  
+  const mlEl=document.getElementById('cat-ml');
+  if(mlEl){ mlEl.textContent=`${m.pron}的性格 · ${m.label}`; mlEl.style.background=m.col+'22'; mlEl.style.color=m.col; }
+  
+  const bar = document.getElementById('cat-mb');
+  if(bar) { bar.style.cssText = `width: ${mv}%; background: ${mc}; transition: all 0.3s ease;`; }
+  
+  const adopt=catData.adoptDate?new Date(catData.adoptDate+'T00:00:00'):null;const today=new Date();const daysLeft=adopt?Math.max(0,28-Math.floor((today-adopt)/86400000)):28;
+  setText('cat-da', adopt?`认养日：${catData.adoptDate} · 还有 ${daysLeft} 天离开`:'');
+  setText('cat-th', catData.thoughts[todayStr()]||'…');
+  
+  const wdays=getWeekDays(0),wmins=wdays.reduce((a,d)=>a+getDayMins(checkinData,d),0),wh=wmins/60;
+  setText('cat-wr', m.wr[getRatingIdx(wh)]);
+  const wrWrap = document.getElementById('cat-wr-wrap'); if(wrWrap) wrWrap.classList.remove('hidden');
+  
+  const dow=new Date().getDay();
+  const diaryWrap = document.getElementById('cat-diary-wrap');
+  if(dow===0||dow===1){
+      const wk=getWeekDays(-1)[0];
+      if(!catData.diary[wk])catData.diary[wk]=genCatDiary(wk);
+      setText('cat-diary', catData.diary[wk]);
+      if(diaryWrap) diaryWrap.classList.remove('hidden');
+  } else {
+      if(diaryWrap) diaryWrap.classList.add('hidden');
+  }
+  
+  updateCatSidebar();
+}
+function genCatDiary(weekStart){
+  const days=getWeekDays(-1);const m=MBTI[catData.mbti];const pron=m.pron;const wdays=days.filter(d=>getDayMins(checkinData,d)>0);const wmin=days.reduce((a,d)=>a+getDayMins(checkinData,d),0);const td=days.reduce((a,d)=>a+(weekTasks[d]||[]).filter(t=>t.done).length,0);
+  let lines=[];
+  if(wdays.length===0)lines.push(`这一周，铲屎官一次都没来。${pron}独守着椅子，靠喝西北风过活。`);
+  else if(wdays.length>=5)lines.push(`这一周铲屎官来了${wdays.length}天。${pron}几乎每天都能见到，日子还不错。`);
+  else lines.push(`这周铲屎官来了${wdays.length}天。其余时间${pron}在思考：他是不是去找别的猫了。`);
+  if(wmin>40*60)lines.push(`铲屎官工作了很久，屏幕一直亮着。${pron}在旁边睡觉，感到很安心。`);
+  else if(wmin>15*60)lines.push(`铲屎官工作的时候，${pron}就坐在旁边看。偶尔发出声音表示鼓励。`);
+  if(td>8)lines.push(`那个叫「任务列表」的东西被消灭得差不多了，${pron}替铲屎官感到有成就感。`);
+  const wh=wmin/60/4;const ri=getRatingIdx(wh);const rating=m.wr[ri];
+  lines.push(`本周总评（${pron}视角）：${rating}`);lines.push(`—— 来自一只有独立思想的${BREEDS.find(x=>x.id===catData.breed)?.name||'猫'}`);
+  return lines.join('\n\n');
+}
+function checkCatDeparture(){
+  if(!catData.setup||catData.farewellPending)return;
+  const adopt=new Date((catData.adoptDate||todayStr())+'T00:00:00');const days=Math.floor((new Date()-adopt)/86400000);
+  if(days>=28){
+    const avgH=getFarewellAvgH();const vi=avgH>=35?0:avgH>=15?1:2;const m=MBTI[catData.mbti];
+    catData.farewellLetter=m.fl[vi];catData.farewellPending=true;saveData();
+    setTimeout(showFarewellEnvelope,2000);
+  }
+}
+function showFarewellEnvelope(){
+  const m=MBTI[catData.mbti];document.getElementById('fw-title').textContent=`${catData.name} 给你留了一封信`;document.getElementById('fw-sub').textContent=`……28天了，${m.pron}要出发了`;document.getElementById('fw-env').classList.remove('hidden');document.getElementById('fw-letter').classList.add('hidden');document.getElementById('fwpop').classList.remove('hidden');
+}
+function openFarewellLetter(){document.getElementById('fw-env').classList.add('hidden');document.getElementById('fw-letter').classList.remove('hidden');document.getElementById('fw-text').textContent=catData.farewellLetter;document.getElementById('fw-btn').textContent=`收好了，再见 ${catData.name} 🐾`;}
+function archiveCurrentCat(){
+  const m=MBTI[catData.mbti];const avgH=getFarewellAvgH();const totalH=Math.round(avgH*4);
+  catArchive.push({id:'cat_'+Date.now(),breed:catData.breed,name:catData.name,mbti:catData.mbti,pawColor:m.col,label:m.label,adoptDate:catData.adoptDate,leaveDate:todayStr(),totalHours:totalH,farewellLetter:catData.farewellLetter});
+  if(!appStats._cat1){appStats._cat1=true;}saveData();
+  catData={setup:false,breed:null,name:'',mbti:null,food:0,moodValue:70,adoptDate:null,farewellPending:false,farewellLetter:'',thoughts:{},diary:{},lastCalcDate:null};
+  saveData();document.getElementById('fwpop').classList.add('hidden');renderPawPrints();updateCatSidebar();
+  // navigate to cat section
+  document.querySelector('[data-sec="cat"]').click();checkBadges();showToast('猫咪已归档，去认养下一只吧 🐾');
+}
+function renderPawPrints(){
+  const wrap=document.getElementById('paw-wrap'),prints=document.getElementById('paw-prints');
+  if(!catArchive.length){wrap.classList.add('hidden');return;}wrap.classList.remove('hidden');
+  prints.innerHTML=catArchive.map((c,i)=>`<div class="paw-btn relative group" onclick="showArchiveDetail(${i})" title="${c.name}">${pawSvg(c.pawColor,22)}<span class="ps-label hidden group-hover:block">${c.name}</span></div>`).join('');
+}
+function showArchiveDetail(idx){
+  const c=catArchive[idx];if(!c)return;document.getElementById('adname').textContent=`${c.name} · ${BREEDS.find(x=>x.id===c.breed)?.name||''}`;document.getElementById('adimg').src=`${IMG[c.breed]?.L||''}`;document.getElementById('adinfo').innerHTML=`<div>🐾 性格：${c.label}</div><div>📅 认养：${c.adoptDate} → ${c.leaveDate}</div><div>⏱️ 累计工时：${c.totalHours}小时</div>`;document.getElementById('adletter').textContent=c.farewellLetter;document.getElementById('adpop').classList.remove('hidden');
+}
+function renderArchive(){
+  const grid=document.getElementById('arc-grid'),empty=document.getElementById('arc-empty');
+  if(!catArchive.length){grid.innerHTML='';empty.classList.remove('hidden');return;}empty.classList.add('hidden');
+  grid.innerHTML=[...catArchive].reverse().map((c,i)=>{const ri=catArchive.length-1-i;const b=BREEDS.find(x=>x.id===c.breed)||{name:''};return `<div class="bg-gray-50 rounded-2xl p-4 cursor-pointer hover:shadow-md transition-shadow" onclick="showArchiveDetail(${ri})"><img src="${IMG[c.breed]?.T||''}" style="width:100%;height:80px;object-fit:contain;border-radius:8px" class="mb-2"><div class="font-medium text-gray-800 text-sm">${c.name}</div><div class="text-xs text-gray-500">${b.name}</div><div class="flex items-center gap-1 mt-1">${pawSvg(c.pawColor,14)}<span class="text-xs text-gray-400">${c.label}</span></div><div class="text-xs text-gray-400 mt-1">${c.adoptDate}</div></div>`;}).join('');
+}
+function openCatSetup(){
+  selectedBreed=null;document.getElementById('css1').classList.remove('hidden');document.getElementById('css2').classList.add('hidden');document.getElementById('csnb').disabled=true;
+  document.getElementById('brg').innerHTML=BREEDS.map(b=>`<div class="breed-btn" onclick="selectBreed('${b.id}',this)" title="${b.name}"><img src="${IMG[b.id]?.T||''}" alt="${b.name}"><div class="text-xs text-gray-600 text-center mt-1 font-medium">${b.name}</div></div>`).join('');
+  document.getElementById('csmm').classList.remove('hidden');
+}
+function selectBreed(id,el){selectedBreed=id;document.querySelectorAll('.breed-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');document.getElementById('csnb').disabled=false;}
+
+// ── TASKS ──
+function renderWeekTasks(){
+  const days=getWeekDays(taskWeekOff),today=todayStr();const s=new Date(days[0]+'T00:00:00'),e=new Date(days[6]+'T00:00:00');
+  document.getElementById('twl').textContent=`${s.getMonth()+1}/${s.getDate()} — ${e.getMonth()+1}/${e.getDate()}`;
+  const dnames=['一','二','三','四','五','六','日'];const tkeys=[1,2,3,4,5,6,0];
+  document.getElementById('wtg').innerHTML=days.map((ds,i)=>{const d=new Date(ds+'T00:00:00'),isToday=ds===today,th=DAY_THEMES[tkeys[i]];const tasks=weekTasks[ds]||[];return `<div class="rounded-xl p-2 ${isToday?'ring-2':'ring-0'}" style="background:${isToday?th.card||'#DBEAFE':'#f9fafb'};--tw-ring-color:${th.p}"><div class="text-xs font-bold text-center mb-0.5" style="color:${th.text}">周${dnames[i]}</div><div class="text-xs text-center text-gray-400 mb-2">${d.getDate()}日</div><div class="space-y-1 mb-2">${tasks.map((tk,ti)=>`<div class="flex items-start gap-1 group"><input type="checkbox" ${tk.done?'checked':''} onchange="toggleTask('${ds}',${ti})" class="mt-0.5 flex-shrink-0"><span class="text-xs leading-snug ${tk.done?'line-through text-gray-300':'text-gray-700'} flex-1 min-w-0 break-words">${tk.name}</span><button onclick="removeTask('${ds}',${ti})" class="text-gray-200 hover:text-red-400 flex-shrink-0 text-xs leading-none opacity-0 group-hover:opacity-100">×</button></div>`).join('')}</div><input type="text" placeholder="添加…" id="ti-${ds}" data-ds="${ds}" onkeydown="if(event.key==='Enter')addTask(this.dataset.ds,this)" class="w-full text-xs px-1.5 py-1 border border-gray-200 rounded-lg focus:outline-none bg-white/70"></div>`;}).join('');
+}
+function addTask(ds,inp){
+    if(!inp){inp=document.querySelector('[data-ds="'+ds+'"]');}
+    if(!inp)return;
+    const v=inp.value.trim();
+    if(!v)return;
+    if(!weekTasks[ds])weekTasks[ds]=[];
+    
+    weekTasks[ds].push({name:v,done:false});
+    inp.value='';
+    
+    if(catData.setup){
+        const m = MBTI[catData.mbti];
+        const msg = (m && m.tr && m.tr.td) ? m.tr.td : '任务已添加，喵！';
+        showToast(msg);
+    }
+    
+    saveData();
+    renderWeekTasks();
+    checkBadges();
+}
+
+function toggleTask(ds,i){
+    if(weekTasks[ds]?.[i]){
+        weekTasks[ds][i].done = !weekTasks[ds][i].done;
+        // 打勾完成任务，奖励 0.5 猫粮！
+        if(weekTasks[ds][i].done) addCatFood(0.5,'任务');
+    }
+    const all=weekTasks[ds]||[];
+    // 检查是否清空了当天的所有任务，发放成就徽章
+    if(all.length>0 && all.every(t=>t.done) && !appStats.clearedDays.includes(ds)){
+        appStats.clearedDays.push(ds);
+        appStats.milestones.taskClears++;
+        checkRepeatBadge('taskClears',appStats.milestones.taskClears);
+    }
+    saveData();
+    renderWeekTasks();
+    checkBadges();
+}
+
+function removeTask(ds,i){weekTasks[ds]?.splice(i,1);saveData();renderWeekTasks();}
+
+// ── REST ──
+function renderRest(){const list=document.getElementById('rls');if(!restDays.length){list.innerHTML='<p class="text-sm text-gray-400 text-center py-3">暂无休息日记录</p>';return;}const tl={full:'全天',am:'上午',pm:'下午'};list.innerHTML=[...restDays].sort((a,b)=>b.date.localeCompare(a.date)).map(r=>{const d=new Date(r.date+'T00:00:00');return `<div class="flex items-center justify-between p-3 cc rounded-xl"><div><span class="text-sm font-medium text-gray-700">${r.date} ${DAY_NAMES[d.getDay()]}</span><span class="text-xs bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded ml-2">${tl[r.type||'full']}</span>${r.reason?`<span class="text-xs text-gray-400 ml-1">· ${r.reason}</span>`:''}</div><button onclick="delRest('${r.date}')" class="text-gray-300 hover:text-red-400 text-sm">删除</button></div>`;}).join('');}
+function delRest(d){restDays=restDays.filter(r=>r.date!==d);saveData();renderRest();}
+
+// ── STATS RENDER ──
+function renderStats(){updateStats();document.getElementById('std').textContent=Object.keys(checkinData).filter(d=>getDayMins(checkinData,d)>0).length;document.getElementById('sth').textContent=Math.floor(appStats.totalMinutes/60);document.getElementById('sms').textContent=appStats.maxStreak;document.getElementById('sbc').textContent=appStats.earnedBadges.length;renderBadges();const days14=Array.from({length:14},(_,i)=>dateStr(i-13));const ctx=document.getElementById('ch')?.getContext('2d');if(!ctx)return;if(window._wc)window._wc.destroy();const pr=getComputedStyle(document.documentElement).getPropertyValue('--p').trim()||'#60A5FA';const ac=getComputedStyle(document.documentElement).getPropertyValue('--card')||'#DBEAFE';window._wc=new Chart(ctx,{type:'bar',data:{labels:days14.map(fmtDate),datasets:[{label:'工时(h)',data:days14.map(d=>+(getDayMins(checkinData,d)/60).toFixed(1)),backgroundColor:ac||'#DBEAFE',borderColor:pr,borderWidth:2,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f3f4f6'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});}
+
+// ── REPORT ──
+function buildWeekNarr(off=0){const days=getWeekDays(off);const dn=['一','二','三','四','五','六','日'];const tk=[1,2,3,4,5,6,0];const s=new Date(days[0]+'T00:00:00'),e=new Date(days[6]+'T00:00:00');const wl=`${s.getFullYear()}年${s.getMonth()+1}月${s.getDate()}日 — ${e.getMonth()+1}月${e.getDate()}日`;let tm=0,wd=[],bd={n:'',m:0},ta=0,ea=0,pa=0;days.forEach((ds,i)=>{const mins=getDayMins(checkinData,ds),isRest=restDays.some(r=>r.date===ds&&r.type==='full');if(mins>0&&!isRest){wd.push(ds);tm+=mins;if(mins>bd.m)bd={n:'周'+dn[i],m:mins};}const done=(weekTasks[ds]||[]).filter(t=>t.done);ta+=done.length;ea+=done.filter(t=>EMAIL_KW.some(k=>t.name.toLowerCase().includes(k))).length;pa+=done.filter(t=>PAPER_KW.some(k=>t.name.toLowerCase().includes(k))).length;});const th=Math.floor(tm/60),tm2=tm%60,avg=wd.length>0?Math.round(tm/wd.length):0;let open=tm===0?'这一周，你的椅子很想念你。打卡记录空空如也，但也许这正是你需要的那段喘息。':wd.length<=2?`这一周，你只打开了${wd.length}次工位的灯，但仍然积累了 ${th}小时${tm2>0?tm2+'分钟':''}。有时候，少即是精。`:tm>=40*60?`这一周，你大概是整栋楼最勤奋的那个人。${th}小时${tm2>0?tm2+'分钟':''}——${wd.length}个与科研正面交锋的日子。`:`${wl}，一周的光阴悄悄走过。你在${wd.length}天留下了足迹，攒下了 ${th}小时${tm2>0?tm2+'分钟':''}。`;let best=bd.m>0?`这周最拼的一天是${bd.n}，你一口气工作了${fmtMins(bd.m)}。`:'' ;let tl='';if(ta>0){tl=`任务列表上，你打了${ta}个勾。`;if(ea>0)tl+=`其中${ea}个是邮件沟通——在学术界，会写邮件是一项真技能。`;if(pa>0)tl+=`有${pa}个任务跟论文相关，写下去，终将写完。`;}const CLOSE_H=['下周，你会更好——或者至少，你会继续出现。这就够了。','愿实验不再抽风，代码不再报错，导师准时回消息。'];const CLOSE_M=['稳稳的一周。不轰轰烈烈，但踏实。下周继续。',`平均每天${fmtMins(avg)}，这个节奏其实挺好。保持住。`];const CLOSE_L=['有打卡的周，总比没有的好。下周，多给自己一点时间？','每次重新开始都不晚，哪怕从明天开始。'];const close=randInt(tm>=25*60?CLOSE_H:tm>=10*60?CLOSE_M:CLOSE_L);return[open,best,tl,close].filter(Boolean);}
+function buildMonthNarr(off=0){const days=getMonthDays(off);const d0=new Date(days[0]+'T00:00:00');const ml=`${d0.getFullYear()}年${d0.getMonth()+1}月`;let tm=0,wd=[],bd={n:'',m:0},ta=0,ls=0,cs=0;days.forEach(ds=>{const mins=getDayMins(checkinData,ds),isRest=restDays.some(r=>r.date===ds&&r.type==='full');if(mins>0&&!isRest){wd.push(ds);tm+=mins;if(mins>bd.m){const dd=new Date(ds+'T00:00:00');bd={n:`${dd.getMonth()+1}/${dd.getDate()}`,m:mins};}cs++;if(cs>ls)ls=cs;}else if(!isRest)cs=0;ta+=(weekTasks[ds]||[]).filter(t=>t.done).length;});const th=Math.floor(tm/60),tm2=tm%60,avg=wd.length>0?Math.round(tm/wd.length):0;const nx=d0.getMonth()>=11?`${d0.getFullYear()+1}年1月`:`${d0.getFullYear()}年${d0.getMonth()+2}月`;const open=tm===0?`${ml}，一整个月的空白。有时候，沉默本身也是一种答案。`:wd.length>=20?`${ml}，你几乎没有停下来。${wd.length}天打卡，累计${th}小时——这个月，你把科研刻在了日历上。`:`${ml}，一个月缓缓走过。你在${wd.length}天留下了足迹，累计${th}小时${tm2>0?tm2+'分钟':''}。`;const detail=bd.m>0?`这个月最高产的是${bd.n}，工作了${fmtMins(bd.m)}。`:'';const stk=ls>=5?`这个月你最长连续${ls}天打卡，那段时间状态一定在线。`:'';const tl=ta>0?`你在任务清单上完成了${ta}件待办，每一个勾都是小小的胜利。`:'';const close=`${nx}，新的页面翻开了。时间是单行道，但记录让它有了重量。`;return[open,detail,stk,tl,close].filter(Boolean);}
+function showNarrative(type,off=0){const ps=type==='week'?buildWeekNarr(off):buildMonthNarr(off);const days=type==='week'?getWeekDays(off):getMonthDays(off);const d0=new Date(days[0]+'T00:00:00');document.getElementById('npt').textContent=type==='week'?'📅 周报':'📆 月报';document.getElementById('npti').textContent=type==='week'?'本周回顾':'月度总结';document.getElementById('npsu').textContent=type==='week'?`${d0.getMonth()+1}月${d0.getDate()}日 — 那七天的故事`:`${d0.getFullYear()}年${d0.getMonth()+1}月 · 完整记录`;document.getElementById('npb').innerHTML=ps.map(p=>`<p>${p}</p>`).join('');document.getElementById('npcb').textContent=type==='week'?'下周继续 💪':'继续前进 🚀';document.getElementById('npop').classList.remove('hidden');}
+function closeNarrative(){document.getElementById('npop').classList.add('hidden');}
+function checkAutoReport(){const today=new Date(),dow=today.getDay(),ds=todayStr();if(dow===1&&localStorage.getItem('phd_lwr')!==ds){const has=getWeekDays(-1).some(d=>getDayMins(checkinData,d)>0);if(has){localStorage.setItem('phd_lwr',ds);setTimeout(()=>showNarrative('week',-1),1500);return;}}const ef=today.getDate()<=3&&dow>=1&&dow<=5&&localStorage.getItem('phd_lmr')!==ds.slice(0,7);if(ef){const has=getMonthDays(-1).some(d=>getDayMins(checkinData,d)>0);if(has){localStorage.setItem('phd_lmr',ds.slice(0,7));setTimeout(()=>showNarrative('month',-1),1500);}}}
+function renderReport(){
+  if(rptTab==='week'){const days=getWeekDays(rptWeekOff);const s=new Date(days[0]+'T00:00:00'),e=new Date(days[6]+'T00:00:00');document.getElementById('rwl').textContent=`${s.getFullYear()}年${s.getMonth()+1}月${s.getDate()}日 — ${e.getMonth()+1}月${e.getDate()}日`;const dn=['一','二','三','四','五','六','日'];const tk=[1,2,3,4,5,6,0];let tm=0,wd=0,ta=0,bd={n:'',m:0};const rows=days.map((ds,i)=>{const isRest=restDays.some(r=>r.date===ds&&r.type==='full');const mins=getDayMins(checkinData,ds);if(!isRest&&mins>0){wd++;tm+=mins;}if(mins>bd.m)bd={n:'周'+dn[i],m:mins};ta+=(weekTasks[ds]||[]).filter(t=>t.done).length;const th=DAY_THEMES[tk[i]];const w=Math.min(100,(mins/(8*60))*100);return `<div class="flex items-center gap-2"><div class="text-xs font-bold w-5 text-center" style="color:${th.text}">周${dn[i]}</div><div class="flex-1 h-6 bg-gray-100 rounded-full overflow-hidden">${isRest?'<div class="h-full flex items-center justify-center text-xs text-blue-400 bg-blue-50">休息日</div>':mins>0?`<div class="h-full rounded-full flex items-center justify-end pr-2" style="width:${Math.max(w,10)}%;background:${th.p}"><span class="text-xs text-white font-medium">${fmtMins(mins)}</span></div>`:''}</div></div>`;});const avg=wd>0?Math.round(tm/wd):0;document.getElementById('rc').innerHTML=`<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4"><div class="bg-white rounded-xl p-3 text-center shadow-sm"><div class="text-xl font-bold tp">${fmtMins(tm)}</div><div class="text-xs text-gray-400">总工时</div></div><div class="bg-white rounded-xl p-3 text-center shadow-sm"><div class="text-xl font-bold tp">${wd}天</div><div class="text-xs text-gray-400">打卡天数</div></div><div class="bg-white rounded-xl p-3 text-center shadow-sm"><div class="text-xl font-bold tp">${fmtMins(avg)}</div><div class="text-xs text-gray-400">日均工时</div></div><div class="bg-white rounded-xl p-3 text-center shadow-sm"><div class="text-xl font-bold text-green-500">${ta}</div><div class="text-xs text-gray-400">完成任务</div></div></div><div class="space-y-2 mb-4">${rows.join('')}</div><button onclick="showNarrative('week',${rptWeekOff})" class="w-full wb cp text-white py-2.5 rounded-xl text-sm font-medium">✨ 展开叙事版周报</button>`;}
+  else{const days=getMonthDays(rptMonthOff);const d0=new Date(days[0]+'T00:00:00');document.getElementById('rml').textContent=`${d0.getFullYear()}年${d0.getMonth()+1}月`;let tm=0,wd=0,ta=0;const crs=[];let week=[];let fdow=d0.getDay();if(fdow===0)fdow=7;for(let i=1;i<fdow;i++)week.push(null);days.forEach(ds=>{const mins=getDayMins(checkinData,ds),isRest=restDays.some(r=>r.date===ds&&r.type==='full');if(!isRest&&mins>0){wd++;tm+=mins;}ta+=(weekTasks[ds]||[]).filter(t=>t.done).length;week.push({ds,mins,isRest});if(week.length===7){crs.push(week);week=[];}});if(week.length){while(week.length<7)week.push(null);crs.push(week);}const mx=Math.max(...days.map(d=>getDayMins(checkinData,d)),1);const cal=`<div class="grid grid-cols-7 gap-1 mb-4">${['一','二','三','四','五','六','日'].map(d=>`<div class="text-xs text-center text-gray-400 font-medium pb-1">${d}</div>`).join('')}${crs.map(row=>row.map(c=>{if(!c)return '<div></div>';const dd=new Date(c.ds+'T00:00:00');const it=c.isRest?0:Math.min(1,c.mins/mx);const bg=c.isRest?'#DBEAFE':c.mins>0?`rgba(96,165,250,${.2+it*.8})`:'#f9fafb';const tc=c.mins>0?'white':'#9ca3af';return `<div class="rounded-lg p-1 text-center" style="background:${bg}"><div class="text-xs font-medium" style="color:${tc}">${dd.getDate()}</div>${c.mins>0?`<div style="font-size:8px;color:${tc}">${Math.floor(c.mins/60)}h</div>`:''}</div>`;}).join('')).join('')}</div>`;document.getElementById('mrc').innerHTML=`<div class="grid grid-cols-3 gap-3 mb-4"><div class="bg-white rounded-xl p-3 text-center shadow-sm"><div class="text-xl font-bold tp">${fmtMins(tm)}</div><div class="text-xs text-gray-400">月总工时</div></div><div class="bg-white rounded-xl p-3 text-center shadow-sm"><div class="text-xl font-bold tp">${wd}</div><div class="text-xs text-gray-400">打卡天数</div></div><div class="bg-white rounded-xl p-3 text-center shadow-sm"><div class="text-xl font-bold text-green-500">${ta}</div><div class="text-xs text-gray-400">完成任务</div></div></div>${cal}<button onclick="showNarrative('month',${rptMonthOff})" class="w-full wb cp text-white py-2.5 rounded-xl text-sm font-medium">✨ 展开叙事版月报</button>`;}
+}
+
+// ── TOAST ──
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('tmsg').textContent=msg;t.classList.remove('hidden','pou');t.classList.add('pin');setTimeout(()=>{t.classList.add('pou');setTimeout(()=>{t.classList.add('hidden');t.classList.remove('pin','pou');},350);},2500);}
+
+// ── NAV ──
+function initNav(){
+  document.querySelectorAll('.nav-btn').forEach(btn=>{btn.addEventListener('click',()=>{const sec=btn.dataset.sec;document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.remove('na');b.classList.add('text-gray-500');});btn.classList.add('na');btn.classList.remove('text-gray-500');document.querySelectorAll('main>section').forEach(s=>s.classList.add('hidden'));document.getElementById('sec-'+sec).classList.remove('hidden');if(sec==='tasks')renderWeekTasks();if(sec==='rest')renderRest();if(sec==='stats')renderStats();if(sec==='report')renderReport();if(sec==='garden')updateGardenUI();if(sec==='cat'){updateCatMood();updateCatUI();}if(sec==='archive')renderArchive();});});
+  document.getElementById('tbw').addEventListener('click',()=>{rptTab='week';document.getElementById('tbw').className='px-4 py-1.5 rounded-full text-sm font-medium cp text-white';document.getElementById('tbm').className='px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-500';document.getElementById('rwp').classList.remove('hidden');document.getElementById('rmp').classList.add('hidden');renderReport();});
+  document.getElementById('tbm').addEventListener('click',()=>{rptTab='month';document.getElementById('tbm').className='px-4 py-1.5 rounded-full text-sm font-medium cp text-white';document.getElementById('tbw').className='px-4 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-500';document.getElementById('rwp').classList.add('hidden');document.getElementById('rmp').classList.remove('hidden');renderReport();});
+  document.getElementById('btn-og').addEventListener('click',()=>document.querySelector('[data-sec="garden"]').click());
+  document.getElementById('btn-oc').addEventListener('click',()=>document.querySelector('[data-sec="cat"]').click());
+}
+function updateDT(){const n=new Date();document.getElementById('hdt').textContent=`${n.getFullYear()}年${n.getMonth()+1}月${n.getDate()}日 ${DAY_NAMES[n.getDay()]} ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;if(n.getHours()===23&&n.getMinutes()===59&&workState!=='ended'&&workState!=='idle')endDay();}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  applyTheme();loadData();updateCatMood();
+  document.getElementById('hq').textContent=QUOTES[Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000)%QUOTES.length];
+  updateDT();setInterval(updateDT,1000);
+  document.getElementById('bst').addEventListener('click',startWork);
+  document.getElementById('bpa').addEventListener('click',pauseWork);
+  document.getElementById('bre').addEventListener('click',startWork);
+  document.getElementById('ben').addEventListener('click',()=>{if(confirm('确定结束今天的打卡吗？'))endDay();});
+  document.getElementById('cat-feed').addEventListener('click',feedCat);
+  document.getElementById('bar').addEventListener('click',()=>{const d=document.getElementById('rdt').value,tp=document.getElementById('rtp').value,r=document.getElementById('rrs').value.trim();if(!d){showToast('请选择日期');return;}if(restDays.some(x=>x.date===d)){showToast('该日期已有记录');return;}restDays.push({date:d,type:tp,reason:r});document.getElementById('rdt').value='';document.getElementById('rrs').value='';saveData();renderRest();showToast('已添加休息日 😴');});
+  document.getElementById('tpv').addEventListener('click',()=>{taskWeekOff--;renderWeekTasks();});
+  document.getElementById('tnx').addEventListener('click',()=>{taskWeekOff++;renderWeekTasks();});
+  document.getElementById('rpv').addEventListener('click',()=>{rptWeekOff--;renderReport();});
+  document.getElementById('rnx').addEventListener('click',()=>{rptWeekOff++;renderReport();});
+  document.getElementById('mpv').addEventListener('click',()=>{rptMonthOff--;renderReport();});
+  document.getElementById('mnx').addEventListener('click',()=>{rptMonthOff++;renderReport();});
+  // Cat setup
+  document.getElementById('csnb').addEventListener('click',()=>{if(!selectedBreed)return;const b=BREEDS.find(x=>x.id===selectedBreed);document.getElementById('cspi').src=`${IMG[selectedBreed]?.L||''}`;document.getElementById('cspn').textContent=b.name;document.getElementById('css1').classList.add('hidden');document.getElementById('css2').classList.remove('hidden');});
+  document.getElementById('csco').addEventListener('click',()=>{const name=document.getElementById('csni').value.trim();if(!name){showToast('请给猫咪起个名字');return;}const mbtiKey=MBTI_TYPES[Math.floor(Math.random()*8)];catData={setup:true,breed:selectedBreed,name,mbti:mbtiKey,food:5,moodValue:80,adoptDate:todayStr(),farewellPending:false,farewellLetter:'',thoughts:{},diary:{},lastCalcDate:null};if(!appStats._cat1)appStats._cat1=true;saveData();document.getElementById('csmm').classList.add('hidden');document.getElementById('csni').value='';checkBadges();updateCatUI();renderPawPrints();showToast(`欢迎回家，${name}！🏠 性格：${MBTI[mbtiKey].label}`);});
+  initNav();updateStats();updatePlantHours();checkBadges();refreshCI();renderPawPrints();
+  if(workState==='working')startTimer();
+  setInterval(()=>{refreshCI();updateCatMood();checkBadges();},60000);
+  checkAutoReport();updateGardenUI();
+  // Check departure
+  if(catData.setup)checkCatDeparture();
+  else if(!catData.setup){document.getElementById('cat-empty').classList.remove('hidden');document.getElementById('cat-active').classList.add('hidden');}
+  if(catData.farewellPending)setTimeout(showFarewellEnvelope,1000);
+});
+
+// ── FLOATING PET WIDGET ──
+;(function(){
+const BREED_EMOJI={orange:'🐈',golden:'🐱',white:'🐱',cow:'🐱',shorthair:'😺',silver:'😸',siamese:'😻',ragdoll:'😻',abyssinian:'🐈',black:'🐈‍⬛',calico:'🐱'};
+const MSGS={
+  working:['好状态！继续～','专注就是超能力💪','冲鸭！很棒！','滴～在线打卡中','干得漂亮！','你最努力了！'],
+  paused:['短暂休息，很快回来吧~','喝杯水？','暂停了，稍微喘口气'],
+  idle_am:['早上好！今天准备好了吗？','新的一天，准备开始？','早！点我开始打卡哦'],
+  idle_pm:['下午了还没开始？','时间不等人哦~','要开始了吗？'],
+  idle_eve:['今晚还要继续吗？','注意休息哦~','今天就到这了？'],
+  slacking:['哎，刚才去哪了？','发现你溜号了！','摸鱼被逮到咯~','回来了？快继续！','切页面了哦，我注意到了~'],
+  ended:['今天辛苦了！休息好 🌙','打卡完成！很棒！','今日任务结束，明天继续！'],
+  long_work:['已经连续工作挺久了，要休息一下吗？','专注不忘休息哦~','劳逸结合才能走得远！'],
+  greet_am:['早上好！今天也要加油 ✨','早安！新的一天开始了～'],
+  greet_pm:['下午好～状态还在吗？','下午好！继续努力！'],
+  greet_eve:['晚上好！注意休息哦 🌙','晚上了，辛苦了～'],
+};
+function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+function getEmoji(){return(typeof catData!=='undefined'&&catData.setup&&BREED_EMOJI[catData.breed])||'🐱';}
+function getPetName(){return(typeof catData!=='undefined'&&catData.setup&&catData.name)||'小助手';}
+
+let petEl,bubEl,bubTxt,panEl,charEl,emoEl,dotEl;
+let isDrag=false,didMove=false,dSX=0,dSY=0,dSR=0,dSB=0;
+let pOpen=false,bubTimer=null,lastBub=0,hidAt=null,cwTimer=null,lastWS=null;
+
+function say(msg,dur=4800){
+  if(!bubEl||!bubTxt)return;
+  clearTimeout(bubTimer);
+  bubTxt.textContent=msg;
+  bubEl.style.display='block';
+  bubEl.classList.remove('bpop');void bubEl.offsetWidth;bubEl.classList.add('bpop');
+  lastBub=Date.now();
+  bubTimer=setTimeout(()=>{bubEl.style.display='none';},dur);
+}
+function maySay(type){if(Date.now()-lastBub<5*60*1000)return;say(rnd(MSGS[type]||MSGS.idle_am));}
+
+function stateColor(){
+  if(workState==='working')return{dot:'#22c55e',border:'#86efac',shadow:'0 4px 18px rgba(34,197,94,.28)'};
+  if(workState==='paused')return{dot:'#f59e0b',border:'#fcd34d',shadow:'0 4px 18px rgba(245,158,11,.22)'};
+  if(workState==='ended')return{dot:'#8b5cf6',border:'#c4b5fd',shadow:'0 4px 18px rgba(139,92,246,.22)'};
+  return{dot:'#d1d5db',border:'#e5e7eb',shadow:'0 4px 18px rgba(0,0,0,.1)'};
+}
+function updVisual(){
+  if(!charEl||!dotEl||!emoEl)return;
+  const c=stateColor();
+  dotEl.style.background=c.dot;charEl.style.borderColor=c.border;charEl.style.boxShadow=c.shadow;
+  emoEl.textContent=getEmoji();
+  charEl.classList.remove('pat-idle','pat-work');
+  charEl.classList.add(workState==='working'?'pat-work':'pat-idle');
+}
+function updPanel(){
+  if(!panEl)return;
+  const mins=typeof getDayMins==='function'?getDayMins(checkinData,todayStr()):0;
+  const h=Math.floor(mins/60),m=mins%60;
+  const fmt=mins>0?`${h}h${m>0?' '+m+'m':''}`:null;
+  const nl=panEl.querySelector('#pn-name');
+  const il=panEl.querySelector('#pn-info');
+  const ab=panEl.querySelector('#pn-act');
+  const eb=panEl.querySelector('#pn-end');
+  const pb=panEl.querySelector('#pn-bar');
+  const states={working:'工作中 ▶',paused:'已暂停 ⏸',ended:'今日完成 ✅',idle:'等待中'};
+  if(nl)nl.textContent=getPetName()+' · '+(states[workState]||'等待中');
+  if(il){
+    if(workState==='working')il.textContent=`今日 ${fmt||'0m'} · 进行中`;
+    else if(workState==='paused')il.textContent=`今日 ${fmt||'0m'} · 已暂停`;
+    else if(workState==='ended')il.textContent=`今日共 ${fmt||'0m'} 🎉`;
+    else il.textContent=fmt?`今日 ${fmt} 已记录`:'今天还没开始哦';
+  }
+  if(ab){
+    const cfg={working:['⏸ 暂停打卡','#f59e0b'],paused:['▶ 继续打卡','var(--p)'],ended:['✅ 今日已完成','#8b5cf6'],idle:['▶ 开始打卡','var(--p)']};
+    const[t,bg]=cfg[workState]||cfg.idle;
+    ab.textContent=t;ab.style.background=bg;
+  }
+  if(eb)eb.style.display=(workState==='working'||workState==='paused')?'block':'none';
+  if(pb)pb.style.width=Math.min(100,Math.round((mins/480)*100))+'%';
+}
+function openPanel(){pOpen=true;updPanel();panEl.style.display='block';panEl.classList.remove('ppop');void panEl.offsetWidth;panEl.classList.add('ppop');}
+function closePanel(){pOpen=false;if(panEl)panEl.style.display='none';}
+function togglePanel(){pOpen?closePanel():openPanel();}
+
+function startDrag(cx,cy){
+  isDrag=true;didMove=false;dSX=cx;dSY=cy;
+  const r=petEl.getBoundingClientRect();dSR=window.innerWidth-r.right;dSB=window.innerHeight-r.bottom;
+  petEl.style.cursor='grabbing';
+}
+function moveDrag(cx,cy){
+  if(!isDrag)return;
+  if(Math.abs(cx-dSX)>4||Math.abs(cy-dSY)>4)didMove=true;
+  if(!didMove)return;
+  let nr=Math.max(8,dSR-(cx-dSX)),nb=Math.max(8,dSB-(cy-dSY));
+  nr=Math.min(nr,window.innerWidth-68);nb=Math.min(nb,window.innerHeight-68);
+  petEl.style.right=nr+'px';petEl.style.bottom=nb+'px';
+}
+function endDrag(){isDrag=false;petEl.style.cursor='grab';}
+
+function onActClick(){
+  if(workState==='working')pauseWork();
+  else if(workState==='paused'||workState==='idle')startWork();
+  setTimeout(()=>{updVisual();updPanel();},150);closePanel();
+}
+function onEndClick(){
+  if(workState==='ended')return;
+  if(confirm('确定结束今天的打卡吗？'))endDay();closePanel();
+}
+function submitNote(){
+  const inp=document.getElementById('pn-note-inp');
+  if(!inp||!inp.value.trim())return;
+  const name=inp.value.trim();inp.value='';
+  const t=todayStr();
+  if(!weekTasks[t])weekTasks[t]=[];
+  weekTasks[t].push({name,done:false,id:Date.now()});
+  saveData();showToast('已记录到今日任务 ✓');closePanel();
+}
+
+// 摸鱼检测
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){hidAt=Date.now();}
+  else{
+    if(hidAt){
+      const mins=(Date.now()-hidAt)/60000;
+      if(workState==='working'&&mins>=5){setTimeout(()=>{say(rnd(MSGS.slacking),6000);charEl.classList.add('pat-shake');setTimeout(()=>charEl.classList.remove('pat-shake'),500);},700);}
+      else if((workState==='idle')&&mins>=5){const h=new Date().getHours();if(h>=9&&h<=21)setTimeout(()=>say(rnd(h<12?MSGS.idle_am:h<17?MSGS.idle_pm:MSGS.idle_eve)),700);}
+      hidAt=null;
+    }
+    updVisual();
+  }
+});
+
+// state watcher + 90min work reminder
+setInterval(()=>{
+  if(workState===lastWS)return;
+  const prev=lastWS;lastWS=workState;updVisual();if(pOpen)updPanel();
+  if(workState==='working'&&prev!==null)setTimeout(()=>say(rnd(MSGS.working)),400);
+  else if(workState==='paused')setTimeout(()=>say(rnd(MSGS.paused)),400);
+  else if(workState==='ended')setTimeout(()=>say(rnd(MSGS.ended)),500);
+  if(workState==='working'){clearTimeout(cwTimer);cwTimer=setTimeout(()=>{if(workState==='working')say(rnd(MSGS.long_work),6000);},90*60*1000);}
+  else clearTimeout(cwTimer);
+},1000);
+
+// 定时问候（15分钟检查一次，低频）
+setInterval(()=>{
+  if(Date.now()-lastBub<12*60*1000)return;
+  const h=new Date().getHours();
+  if(workState==='working'&&Math.random()<.4)say(rnd(MSGS.working));
+  else if(workState==='idle'&&h>=9&&h<=21&&Math.random()<.5)say(rnd(h<12?MSGS.idle_am:h<17?MSGS.idle_pm:MSGS.idle_eve));
+},15*60*1000);
+
+function buildWidget(){
+  const W=document.createElement('div');
+  W.id='pet-widget';
+  W.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;touch-action:none;-webkit-user-select:none;user-select:none;cursor:grab';
+  W.innerHTML=`
+<div id="pn-bub" style="display:none;position:absolute;bottom:72px;right:0;min-width:130px;max-width:196px;background:#fff;border-radius:16px;padding:9px 13px;box-shadow:0 4px 20px rgba(0,0,0,.13);border:1px solid rgba(0,0,0,.07);z-index:2">
+  <span id="pn-bubtxt" style="font-size:12px;color:#374151;line-height:1.55;display:block"></span>
+  <div style="position:absolute;bottom:-5px;right:18px;width:10px;height:10px;background:#fff;transform:rotate(45deg);border-right:1px solid rgba(0,0,0,.07);border-bottom:1px solid rgba(0,0,0,.07)"></div>
+</div>
+<div id="pn-panel" style="display:none;position:absolute;bottom:72px;right:0;width:212px;background:#fff;border-radius:18px;padding:14px;box-shadow:0 8px 32px rgba(0,0,0,.14);border:1px solid rgba(0,0,0,.06);z-index:2">
+  <div id="pn-name" style="font-size:11px;color:#9ca3af;text-align:center;margin-bottom:4px;font-weight:500"></div>
+  <div id="pn-info" style="font-size:12px;color:#6b7280;text-align:center;margin-bottom:9px"></div>
+  <div style="height:4px;background:#f3f4f6;border-radius:2px;margin-bottom:10px;overflow:hidden"><div id="pn-bar" style="height:100%;background:var(--p);border-radius:2px;transition:width .6s;width:0%"></div></div>
+  <button id="pn-act" style="width:100%;padding:9px;border-radius:12px;color:#fff;font-size:13px;font-weight:500;cursor:pointer;border:none;margin-bottom:6px;background:var(--p)">▶ 开始打卡</button>
+  <button id="pn-end" style="display:none;width:100%;padding:7px;border-radius:10px;background:#fef2f2;color:#ef4444;font-size:12px;cursor:pointer;border:1px solid #fee2e2;margin-bottom:10px">⏹ 结束今天</button>
+  <div style="border-top:1px solid #f3f4f6;padding-top:10px">
+    <div style="font-size:11px;color:#9ca3af;margin-bottom:6px">快速记录任务</div>
+    <div style="display:flex;gap:5px">
+      <input id="pn-note-inp" type="text" placeholder="记一件事…" style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:6px 9px;font-size:12px;outline:none;min-width:0;color:#374151;background:#fff">
+      <button id="pn-note-sub" style="background:var(--p);color:#fff;border-radius:8px;padding:6px 10px;font-size:14px;font-weight:700;cursor:pointer;border:none;flex-shrink:0">+</button>
+    </div>
+  </div>
+</div>
+<div id="pn-char" class="pat-idle" style="width:58px;height:58px;background:#fff;border-radius:50%;border:2.5px solid #e5e7eb;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:border-color .4s,box-shadow .4s">
+  <span id="pn-emo" style="font-size:30px;line-height:1;pointer-events:none">🐱</span>
+  <div id="pn-dot" style="position:absolute;top:1px;right:1px;width:12px;height:12px;border-radius:50%;background:#d1d5db;border:2.5px solid #fff;transition:background .4s"></div>
+</div>`;
+  document.body.appendChild(W);
+  petEl=W;bubEl=W.querySelector('#pn-bub');bubTxt=W.querySelector('#pn-bubtxt');
+  panEl=W.querySelector('#pn-panel');charEl=W.querySelector('#pn-char');
+  emoEl=W.querySelector('#pn-emo');dotEl=W.querySelector('#pn-dot');
+
+  W.addEventListener('mousedown',e=>{if(e.target.closest('#pn-panel'))return;startDrag(e.clientX,e.clientY);});
+  document.addEventListener('mousemove',e=>{moveDrag(e.clientX,e.clientY);});
+  document.addEventListener('mouseup',e=>{if(isDrag&&!didMove&&e.target.closest('#pn-char'))togglePanel();endDrag();});
+  W.addEventListener('touchstart',e=>{if(e.target.closest('#pn-panel'))return;const t=e.touches[0];startDrag(t.clientX,t.clientY);},{passive:true});
+  document.addEventListener('touchmove',e=>{if(!isDrag)return;const t=e.touches[0];moveDrag(t.clientX,t.clientY);},{passive:true});
+  document.addEventListener('touchend',e=>{if(!didMove&&e.changedTouches[0]&&e.target.closest('#pn-char'))togglePanel();endDrag();});
+  charEl.addEventListener('click',e=>{e.stopPropagation();if(!didMove)togglePanel();});
+  document.addEventListener('click',e=>{if(pOpen&&!e.target.closest('#pet-widget'))closePanel();});
+  W.querySelector('#pn-act').addEventListener('click',onActClick);
+  W.querySelector('#pn-end').addEventListener('click',onEndClick);
+  const ni=W.querySelector('#pn-note-inp');
+  ni.addEventListener('keydown',e=>{if(e.key==='Enter')submitNote();});
+  W.querySelector('#pn-note-sub').addEventListener('click',submitNote);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(()=>{
+    buildWidget();updVisual();lastWS=workState;
+    const h=new Date().getHours();
+    setTimeout(()=>say(rnd(h<12?MSGS.greet_am:h<18?MSGS.greet_pm:MSGS.greet_eve),5500),1800);
+  },400);
+});
+})();
+
+</script>
+</body>
+</html>
